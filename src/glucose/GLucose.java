@@ -14,7 +14,6 @@
 package glucose;
 
 import glucose.control.SCMidiDevices;
-import glucose.control.VirtualPatternParameter;
 import glucose.model.Model;
 import glucose.pattern.SCPattern;
 import glucose.ui.Simulation;
@@ -62,14 +61,7 @@ public class GLucose {
 	 * The simulation renderer
 	 */
 	public final Simulation simulation;
-	
-	/**
-	 * The virtual pattern knobs. 
-	 */
-	public final VirtualPatternParameter[] patternKnobs;
 		
-	public final int NUM_PATTERN_KNOBS = 8;
-	
 	/**
 	 * Creates a GLucose instance.
 	 * 
@@ -81,12 +73,6 @@ public class GLucose {
 		// Build the model of the cubes
 		this.model = Model.getInstance();
 		this.simulation = new Simulation(this);
-
-		// Build the knob interface
-		this.patternKnobs = new VirtualPatternParameter[NUM_PATTERN_KNOBS];
-		for (int i = 0; i < patternKnobs.length; ++i) {
-			this.patternKnobs[i] = new VirtualPatternParameter(this, i);
-		}
 		
 		// Note that there is currently a dependency between the model
 		// and the simulation engine. This uses the OpenGL engine to compute
