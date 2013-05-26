@@ -13,8 +13,8 @@
 
 package glucose;
 
-import glucose.control.MidiKnobController;
-import glucose.control.VirtualPatternKnob;
+import glucose.control.SCMidiDevices;
+import glucose.control.VirtualPatternParameter;
 import glucose.model.Model;
 import glucose.pattern.SCPattern;
 import glucose.ui.Simulation;
@@ -64,12 +64,12 @@ public class GLucose {
 	public final Simulation simulation;
 	
 	/**
-	 * The virtual pattern knobs
+	 * The virtual pattern knobs. 
 	 */
-	public final VirtualPatternKnob[] patternKnobs;
-	
+	public final VirtualPatternParameter[] patternKnobs;
+		
 	public final int NUM_PATTERN_KNOBS = 8;
-
+	
 	/**
 	 * Creates a GLucose instance.
 	 * 
@@ -83,9 +83,9 @@ public class GLucose {
 		this.simulation = new Simulation(this);
 
 		// Build the knob interface
-		this.patternKnobs = new VirtualPatternKnob[NUM_PATTERN_KNOBS];
+		this.patternKnobs = new VirtualPatternParameter[NUM_PATTERN_KNOBS];
 		for (int i = 0; i < patternKnobs.length; ++i) {
-			this.patternKnobs[i] = new VirtualPatternKnob(this, i);
+			this.patternKnobs[i] = new VirtualPatternParameter(this, i);
 		}
 		
 		// Note that there is currently a dependency between the model
@@ -111,7 +111,7 @@ public class GLucose {
 	public int[] getColors() {
 		return lx.getColors();
 	}
-	
+		
 	/**
 	 * The current pattern
 	 * 

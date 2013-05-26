@@ -9,7 +9,11 @@ public abstract class SCEffect extends LXEffect {
 	protected final GLucose glucose;
 	
 	protected SCEffect(GLucose glucose) {
-		super(glucose.lx);
+		this(glucose, false);
+	}
+	
+	protected SCEffect(GLucose glucose, boolean momentary) {
+		super(glucose.lx, momentary);
 		this.glucose = glucose;
 	}
 }
