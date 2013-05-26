@@ -13,7 +13,7 @@ public class SCMidiDevices {
 	public static final void initializeStandardDevices(GLucose glucose, LXParameter[] patternParameters, LXParameter[] transitionParameters, LXParameter[] effectParameters) {
 		for (MidiInputDevice device : RWMidi.getInputDevices()) {
 			if ((device.getName().indexOf("nanoKONTROL") != -1) ||
-				(device.getName().indexOf("SLIDER/LXParameter KORG INC.") != -1)) {
+				(device.getName().indexOf("SLIDER/KNOB KORG INC.") != -1)) {
 				initializeNanoKontrol(glucose, device, patternParameters);
 			}
 		}
