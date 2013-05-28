@@ -2,5 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="lib" path="/Applications/Processing.app/Contents/Resources/Java/core.jar"/>
+	<classpathentry kind="lib" path="lib/HeronLX.jar"/>
+	<classpathentry kind="lib" path="lib/jogl.jar"/>
+	<classpathentry kind="lib" path="lib/opengl.jar"/>
+	<classpathentry kind="lib" path="lib/rwmidi.jar"/>
+	<classpathentry kind="lib" path="/Users/benmorrow/Documents/Processing/libraries/oscP5/library/oscP5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
