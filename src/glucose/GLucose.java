@@ -23,6 +23,7 @@ import heronarts.lx.HeronLX;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
+import processing.opengl.PGraphicsOpenGL;
 
 import java.awt.event.KeyEvent;
 
@@ -71,18 +72,13 @@ public class GLucose {
 		this.applet = applet;
 		
 		// Build the model of the cubes
-		this.model = Model.getInstance();
+		this.model = new Model((PGraphicsOpenGL) this.applet.g);
+		
+		// Build simulation render engine
 		this.simulation = new Simulation(this);
-		
-		// Note that there is currently a dependency between the model
-		// and the simulation engine. This uses the OpenGL engine to compute
-		// the positions of all the points based upon GL matrix transforms.
-		// In the future we should separate these so that the position
-		// information is computed independently of the rendering pipeline
-		this.simulation.buildGeometry();
-		
+				
 		// Build an LX instance for pattern and pixel state
-		this.lx = new HeronLX(applet, this.model.numPoints(), 1);
+		this.lx = new HeronLX(applet, this.model.points.size(), 1);
 		this.lx.enableSimulation(false);
 
 		// Register callback on every frame

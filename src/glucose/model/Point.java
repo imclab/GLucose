@@ -11,10 +11,7 @@ import javax.media.opengl.GL;
 public class Point {
 	
 	static int counter = 0;
-	
-	// Iterable list of all points
-	public static final List<Point> list = new ArrayList<Point>();
-	
+		
 	private Strip strip;
 	
 	/**
@@ -43,7 +40,6 @@ public class Point {
 		// Only add real model points to the list
 		if (strip != null) {
 			index = Point.counter++;
-			list.add(this);
 		} else {
 			index = -1;
 		}

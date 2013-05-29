@@ -1,6 +1,8 @@
 package glucose.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.media.opengl.GL;
 
@@ -11,18 +13,15 @@ import javax.media.opengl.GL;
 public class Cube {
 	
 	private final static int CLIPS_PER_CUBE = 4;
-	
-	// Iterable list of all cubes
-	public final static List<Cube> list = new ArrayList<Cube>();
-	
-	// Iterable list of all points in cube
-	public final List<Point> points = new ArrayList<Point>();
-	
-	// Neighbors of this cube
-	private final List<Cube> neighbors = new ArrayList<Cube>();
 		
+	// Iterable list of all points in cube
+	public final List<Point> points;
+	
+	// Iterable list of all clips
+	public final List<Clip> clips;
+	
 	// Each cube has 4 clips to render its faces
-	private final Clip[] clips;
+	private final Clip[] _clips;
 	
 	// Orientation of this cube in space
 	float x, y, z, rx, ry, rz;
@@ -58,16 +57,17 @@ public class Cube {
 		this.face = face;
 		this.rotations = rotations;
  
-		this.clips = new Clip[CLIPS_PER_CUBE];
+		List<Point> _points = new ArrayList<Point>();
+		this._clips = new Clip[CLIPS_PER_CUBE];
 		// prolly will have to rotate c's in some odd way
-		for (int i = 0; i < this.clips.length; i++) {
-			this.clips[i] = new Clip(this);
-			for (Point p : this.clips[i].points) {
-				this.points.add(p);
+		for (int i = 0; i < this._clips.length; i++) {
+			this._clips[i] = new Clip(this);
+			for (Point p : this._clips[i].points) {
+				_points.add(p);
 			}
 		}
-		
-		list.add(this);
+		this.clips = Collections.unmodifiableList(Arrays.asList(this._clips));
+		this.points = Collections.unmodifiableList(_points);
 	}
 	
 	void draw(GL gl, int[] colors, boolean updatePosition) {
@@ -125,7 +125,7 @@ public class Cube {
 		gl.glPushMatrix();
 		gl.glTranslatef(0, 0, 20);
 		gl.glRotatef(-90, 1, 0, 0);
-		clips[0].draw(gl, colors, updatePosition);
+		_clips[0].draw(gl, colors, updatePosition);
 		gl.glPopMatrix();
 
 		gl.glPushMatrix();
@@ -133,14 +133,14 @@ public class Cube {
 		gl.glRotatef(90, 1, 0, 0);
 		gl.glRotatef(180, 0, 0, 1);
 		gl.glRotatef(90, 0, 1, 0);
-		clips[1].draw(gl, colors, updatePosition);
+		_clips[1].draw(gl, colors, updatePosition);
 		gl.glPopMatrix();
 
 		gl.glPushMatrix();
 		gl.glTranslatef(20, 20, 20);
 		gl.glRotatef(180, 0, 0, 1);
 		gl.glRotatef(-90, 1, 0, 0);
-		clips[2].draw(gl, colors, updatePosition);
+		_clips[2].draw(gl, colors, updatePosition);
 		gl.glPopMatrix();
 
 		gl.glPushMatrix();
@@ -148,7 +148,7 @@ public class Cube {
 		gl.glRotatef(90, 1, 0, 0);
 		gl.glRotatef(180, 0, 0, 1);
 		gl.glRotatef(-90, 0, 1, 0);
-		clips[3].draw(gl, colors, updatePosition);
+		_clips[3].draw(gl, colors, updatePosition);
 		gl.glPopMatrix();
 		
 		gl.glPopMatrix();

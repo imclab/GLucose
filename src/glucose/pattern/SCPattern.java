@@ -3,6 +3,7 @@ package glucose.pattern;
 import glucose.GLucose;
 import glucose.model.Cube;
 import glucose.model.Clip;
+import glucose.model.Model;
 import glucose.model.Point;
 import glucose.model.Strip;
 
@@ -19,10 +20,12 @@ import java.util.List;
 public abstract class SCPattern extends LXPattern {
 	
 	protected final GLucose glucose;
-		
+	protected final Model model;
+	
 	protected SCPattern(GLucose glucose) {
 		super(glucose.lx);
 		this.glucose = glucose;
+		this.model = glucose.model;
 	}
 	
 	protected void setColor(Cube cube, int c) {

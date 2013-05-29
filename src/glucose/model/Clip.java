@@ -1,6 +1,8 @@
 package glucose.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import javax.media.opengl.GL;
 
@@ -15,34 +17,36 @@ import javax.media.opengl.GL;
 public class Clip {
 
 	private final static int STRIPS_PER_CLIP = 3;
-	
-	// Iterable list of all clips
-	public final static List<Clip> list = new ArrayList<Clip>();
-	
+		
 	// All points in this clip
-	public final List<Point> points = new ArrayList<Point>(); 
+	public final List<Point> points; 
+	
+	// All strips in this clip
+	public final List<Strip> strips;
 	
 	// Cube that this clip belongs to
 	private Cube cube;
 	
 	// Strips in this clip, each comprised of three
-	private final Strip[] strips;
+	private final Strip[] _strips;
 	
 	Clip(Cube cube) {
 		this.cube = cube;
-		this.strips = new Strip[STRIPS_PER_CLIP];
-		for (int i = 0; i < this.strips.length; i++) {
-			this.strips[i] = new Strip(this);
-			for (Point p : this.strips[i].points) {
-				points.add(p);
+		List<Point> _points = new ArrayList<Point>();
+		this._strips = new Strip[STRIPS_PER_CLIP];
+		for (int i = 0; i < this._strips.length; i++) {
+			this._strips[i] = new Strip(this);
+			for (Point p : this._strips[i].points) {
+				_points.add(p);
 			}
 		}
-		list.add(this);
+		this.strips = Collections.unmodifiableList(Arrays.asList(this._strips));
+		this.points = Collections.unmodifiableList(_points);
 	}
 		
 	void draw(GL gl, int[] colors, boolean updatePosition) {
 		gl.glPushMatrix();
-		for (Strip s : this.strips) {
+		for (Strip s : this._strips) {
 			s.draw(gl, colors, updatePosition);
 			gl.glTranslatef(20, 0, 0);
 			gl.glRotatef(90, 0, 0, 1);

@@ -34,21 +34,10 @@ public class Simulation {
 		pgl.endGL();
 	}
 	
-	/**
-	 * This method uses openGL to render the model with a flag set such
-	 * that as the model is iterated through, the transformation matrix
-	 * is used to calculate the position of each point, based upon the
-	 * rotations and translations performed. This need only be done once,
-	 * after the model is built.
-	 */
-	public void buildGeometry() {
-		int[] colors = new int[glucose.model.numPoints()];
-		pgl.beginGL();
-		glucose.model.draw(gl, colors, true);
-		pgl.endGL();
-		glucose.model.scaleGeometry();
+	public PGraphicsOpenGL getPGL() {
+		return pgl;
 	}
-
+	
 	public void mouseEvent(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
