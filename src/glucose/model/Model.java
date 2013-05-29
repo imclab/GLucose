@@ -121,6 +121,49 @@ public class Model {
 	public int numPoints() {
 		return Point.counter;
 	}
+
+	/**
+	 * Creates scaled constants for the geometry of all the points, based
+	 * upon the range of minimum to maximum values.
+	 */
+	public void scaleGeometry() {
+		float minX, minY, minZ, maxX, maxY, maxZ;
+		minX = minY = minZ = Float.MAX_VALUE;
+		maxX = maxY = maxZ = Float.MIN_VALUE;
+		for (Point p : Point.list) {
+			if (p != Model.zeroPoint) {
+				minX = Math.min(minX, p.x);
+				minY = Math.min(minY, p.y);
+				minZ = Math.min(minZ, p.z);
+				maxX = Math.max(maxX, p.x);
+				maxY = Math.max(maxY, p.y);
+				maxZ = Math.max(maxZ, p.z);
+			}
+		}
+		
+		// Set the scaled position values of all cubes
+		for (Point p : Point.list) {
+			// TODO(mcslee): change x, y, z throughout the entire UI layer,
+			// not just the functional mapping.
+			p.fx = 255.f * (p.x - maxX) / (minX - maxX);
+			p.fy = 127.f * (p.y - minY) / (maxY - minY);
+			p.fz = 127.f * (p.z - maxZ) / (minZ - maxZ);
+		}
+		
+		// Set the scaled center positions of all cubes
+		for (Cube c : Cube.list) {
+			float sx = 0, sy = 0, sz = 0, num = 0;
+			for (Point p : c.points) {
+				sx += p.fx;
+				sy += p.fy;
+				sz += p.fz;
+				++num;
+			}
+			c.fx = sx / num;
+			c.fy = sy / num;
+			c.fz = sz / num;
+		}
+	}	
 	
 	public void draw(GL gl, int[] colors, boolean updatePosition) {
 		if (updatePosition) {

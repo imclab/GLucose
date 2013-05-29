@@ -23,7 +23,7 @@ public class Point {
 	public final int index;
 	
 	// Position in raw coordinate space
-	public float x, y, z;
+	float x, y, z;
 	
 	// Positions, scaled onto 128/255 shape
 	public float fx, fy, fz;
@@ -54,10 +54,9 @@ public class Point {
 		gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, m, 0);
 
 		// TODO(mcslee): fix this hack, should not have global state for zeroPoint
-		x = m[12] - Model.zeroPoint.x;
-		y = m[13] - Model.zeroPoint.y;
-		z = m[14] - Model.zeroPoint.z;
-		
+		x = m[13] - Model.zeroPoint.x;
+		y = m[14] - Model.zeroPoint.y;
+		z = m[12] - Model.zeroPoint.z;		
 	}
 		
 	void draw(GL gl, int[] colors, boolean updatePosition) {

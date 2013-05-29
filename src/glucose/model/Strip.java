@@ -15,14 +15,11 @@ public class Strip {
 	// Iterable list of all strips
 	public static final List<Strip> list = new ArrayList<Strip>();
 	
-	
 	private final List<Strip> neighbors = new ArrayList<Strip>();
 	
 	private final Clip clip;
 	
 	public final Point[] points;
-
-	private float x, y, z;
 	
 	Strip(Clip clip) {
 		this.clip = clip;

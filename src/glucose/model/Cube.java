@@ -25,7 +25,7 @@ public class Cube {
 	private final Clip[] clips;
 	
 	// Orientation of this cube in space
-	private float x, y, z, rx, ry, rz;
+	float x, y, z, rx, ry, rz;
 	
 	// Scaled position of the center of this cube
 	public float fx, fy, fz;
@@ -35,25 +35,25 @@ public class Cube {
 	private int face = 0;
 	private int rotations=0;
 
-	Cube(double x, double y, double z, double rx, double ry, double rz) {
-		this((float) x, (float) y, (float) z, (float) rx, (float) ry, (float) rz); 
+	Cube(double z, double x, double y, double rz, double rx, double ry) {
+		this((float) z, (float) x, (float) y, (float) rz, (float) rx, (float) ry); 
 	}
 	
-	Cube(double x, double y, double z, double rx, double ry, double rz, boolean flipFlag, int face, int rotations) {
-		this((float) x, (float) y, (float) z, (float) rx, (float) ry, (float) rz, flipFlag, face, rotations);
+	Cube(double z, double x, double y, double rz, double rx, double ry, boolean flipFlag, int face, int rotations) {
+		this((float) z, (float) x, (float) y, (float) rz, (float) rx, (float) ry, flipFlag, face, rotations);
 	}
 	
-	Cube(float x, float y, float z, float rx, float ry, float rz) {
-		this(x, y, z, rx, ry, rz, false, 0, 0);
+	Cube(float z, float x, float y, float rz, float rx, float ry) {
+		this(z, x, y, rz, rx, ry, false, 0, 0);
 	}
 	
-	Cube(float x, float y, float z, float rx, float ry, float rz, boolean flipFlag, int face, int rotations) {
-		this.x = x; 
-		this.y = 192-y; 
-		this.z = z; 
-		this.rx = rx; 
+	Cube(float z, float x, float y, float rz, float rx, float ry, boolean flipFlag, int face, int rotations) {
+		this.z = z;
+		this.x = 192-x; 
+		this.y = y;
+		this.rz = rz;
+		this.rx = rx;
 		this.ry = ry;
-		this.rz= rz;
 		this.flipFlag = flipFlag;
 		this.face = face;
 		this.rotations = rotations;
@@ -73,10 +73,10 @@ public class Cube {
 	void draw(GL gl, int[] colors, boolean updatePosition) {
 		gl.glPushMatrix();
 
-		gl.glTranslatef(x, y, z);
-		gl.glRotatef(rx, 1, 0, 0);
-		gl.glRotatef(ry, 0, 1, 0);
-		gl.glRotatef(rz, 0, 0, 1);
+		gl.glTranslatef(z, x, y);
+		gl.glRotatef(rz, 1, 0, 0);
+		gl.glRotatef(rx, 0, 1, 0);
+		gl.glRotatef(ry, 0, 0, 1);
 
 		// CHIRALITY OPERATION
 		if (flipFlag) { // left handed orientation, clips rotate clockwise around positive cube z vector
