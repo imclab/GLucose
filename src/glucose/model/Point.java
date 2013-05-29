@@ -20,7 +20,7 @@ public class Point {
 	public final int index;
 	
 	// Position in raw coordinate space
-	float x, y, z;
+	public float x, y, z;
 	
 	// Positions, scaled onto 128/255 shape
 	public float fx, fy, fz;
@@ -54,6 +54,11 @@ public class Point {
 		y = m[14] - Model.zeroPoint.y;
 		z = m[12] - Model.zeroPoint.z;		
 	}
+	
+	public byte a;
+	public byte r;
+	public byte g;
+	public byte b;
 		
 	void draw(GL gl, int[] colors, boolean updatePosition) {
 		gl.glBegin(GL.GL_POINTS);
@@ -67,10 +72,10 @@ public class Point {
 //		}  
 		
 		int c = (index < 0) ? 0 : colors[index];
-		byte a = (byte) ((c >> 24) & 0xFF);
-		byte r = (byte) ((c >> 16) & 0xFF);
-		byte g = (byte) ((c >> 8) & 0xFF);
-		byte b = (byte) ((c) & 0xFF);
+		a = (byte) ((c >> 24) & 0xFF);
+		r = (byte) ((c >> 16) & 0xFF);
+		g = (byte) ((c >> 8) & 0xFF);
+		b = (byte) ((c) & 0xFF);
 		gl.glColor4ub(r, g, b, a);
 				
 		gl.glVertex3f(0, 0, 0);
