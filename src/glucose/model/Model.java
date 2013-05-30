@@ -19,7 +19,11 @@ public class Model {
 	public final List<Clip> clips;
 	public final List<Strip> strips;
 	public final List<Point> points;
-		
+	
+	public final float xMax;
+	public final float yMax;
+	public final float zMax; 
+	
 	private final Cube[] _cubes;
 	
 	// TODO(mcslee): find a cleaner way of doing this. the zeroPoint
@@ -143,6 +147,16 @@ public class Model {
 		// In the future we should separate these so that the position
 		// information is computed independently of the rendering pipeline
 		buildGeometry(pgl);
+
+		float _xMax = 0, _yMax = 0, _zMax = 0;
+		for (Point p : points) {
+			_xMax = Math.max(_xMax, p.fx);
+			_yMax = Math.max(_yMax, p.fy);
+			_zMax = Math.max(_zMax, p.fz);
+		}
+		this.xMax = _xMax;
+		this.yMax = _yMax;
+		this.zMax = _zMax;		
 		
 		// TODO(mcslee): add 2nd pass to swap out points for immutable
 		// points so it is not possible to overwrite fx/fy/fz
@@ -160,35 +174,30 @@ public class Model {
 		GL gl = pgl.beginGL();
 		draw(gl, colors, true);
 		pgl.endGL();
-		scaleGeometry();
+		normalizeGeometry();
 	}
 	
 	/**
-	 * Creates scaled constants for the geometry of all the points, based
-	 * upon the range of minimum to maximum values.
+	 * Creates normalized constants for the geometry of all the points, based
+	 * upon a range from 0 to N.
 	 */
-	private void scaleGeometry() {
-		float minX, minY, minZ, maxX, maxY, maxZ;
-		minX = minY = minZ = Float.MAX_VALUE;
-		maxX = maxY = maxZ = Float.MIN_VALUE;
+	private void normalizeGeometry() {
+		float minY, maxX, maxZ;		
+		minY = Float.MAX_VALUE;
+		maxX = maxZ = Float.MIN_VALUE;
 		for (Point p : points) {
-			minX = Math.min(minX, p.x);
 			minY = Math.min(minY, p.y);
-			minZ = Math.min(minZ, p.z);
 			maxX = Math.max(maxX, p.x);
-			maxY = Math.max(maxY, p.y);
 			maxZ = Math.max(maxZ, p.z);
 		}
 		
-		// Set the scaled position values of all cubes
+		// Set the normalized position values of all cubes
 		for (Point p : points) {
-			// TODO(mcslee): change x, y, z throughout the entire UI layer,
-			// not just the functional mapping.
-			p.fx = 255.f * (p.x - maxX) / (minX - maxX);
-			p.fy = 127.f * (p.y - minY) / (maxY - minY);
-			p.fz = 127.f * (p.z - maxZ) / (minZ - maxZ);
+			p.fx = maxX - p.x;
+			p.fy = p.y - minY;
+			p.fz = maxZ - p.z;
 		}
-		
+				
 		// Set the scaled center positions of all cubes
 		for (Cube c : cubes) {
 			float sx = 0, sy = 0, sz = 0, num = 0;
