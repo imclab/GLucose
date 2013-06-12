@@ -12,13 +12,16 @@ import javax.media.opengl.GL;
  */
 public class Cube {
 	
-	private final static int CLIPS_PER_CUBE = 4;
+	public final static int CLIPS_PER_CUBE = 4;
 		
 	// Iterable list of all points in cube
 	public final List<Point> points;
 	
 	// Iterable list of all clips
 	public final List<Clip> clips;
+
+	// Iterable list of all strips
+	public final List<Strip> strips;
 	
 	// Each cube has 4 clips to render its faces
 	private final Clip[] _clips;
@@ -58,15 +61,21 @@ public class Cube {
 		this.rotations = rotations;
  
 		List<Point> _points = new ArrayList<Point>();
+		List<Strip> _strips = new ArrayList<Strip>();
 		this._clips = new Clip[CLIPS_PER_CUBE];
 		// prolly will have to rotate c's in some odd way
 		for (int i = 0; i < this._clips.length; i++) {
 			this._clips[i] = new Clip(this);
+			for (Strip s : this._clips[i].strips) {
+				_strips.add(s);
+			}
 			for (Point p : this._clips[i].points) {
 				_points.add(p);
 			}
 		}
+		
 		this.clips = Collections.unmodifiableList(Arrays.asList(this._clips));
+		this.strips = Collections.unmodifiableList(_strips);
 		this.points = Collections.unmodifiableList(_points);
 	}
 	

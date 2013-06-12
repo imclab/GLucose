@@ -16,7 +16,7 @@ import javax.media.opengl.GL;
  */
 public class Clip {
 
-	private final static int STRIPS_PER_CLIP = 3;
+	public final static int STRIPS_PER_CLIP = 3;
 		
 	// All points in this clip
 	public final List<Point> points; 
