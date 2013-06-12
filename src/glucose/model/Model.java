@@ -93,6 +93,22 @@ public class Model {
 	public Cube getCubeByRawIndex(int index) {
 		return _cubes[index];
 	}
+	
+	/**
+	 * TODO(mcslee): clean this up to internal-only
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public int getRawIndexForCube(int index) {
+		Cube c = cubes.get(index);
+		for (int i = 0; i < _cubes.length; ++i) {
+			if (c == _cubes[i]) {
+				return i;
+			}
+		}
+		return 0;
+	}
 		
 	/**
 	 * This method uses openGL to render the model with a flag set such
