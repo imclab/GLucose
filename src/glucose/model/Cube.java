@@ -34,19 +34,19 @@ public class Cube {
 	private int face = 0;
 	private int rotations=0;
 
-	Cube(double z, double x, double y, double rz, double rx, double ry) {
+	public Cube(double z, double x, double y, double rz, double rx, double ry) {
 		this((float) z, (float) x, (float) y, (float) rz, (float) rx, (float) ry); 
 	}
 	
-	Cube(double z, double x, double y, double rz, double rx, double ry, boolean flipFlag, int face, int rotations) {
+	public Cube(double z, double x, double y, double rz, double rx, double ry, boolean flipFlag, int face, int rotations) {
 		this((float) z, (float) x, (float) y, (float) rz, (float) rx, (float) ry, flipFlag, face, rotations);
 	}
 	
-	Cube(float z, float x, float y, float rz, float rx, float ry) {
+	public Cube(float z, float x, float y, float rz, float rx, float ry) {
 		this(z, x, y, rz, rx, ry, false, 0, 0);
 	}
 	
-	Cube(float z, float x, float y, float rz, float rx, float ry, boolean flipFlag, int face, int rotations) {
+	public Cube(float z, float x, float y, float rz, float rx, float ry, boolean flipFlag, int face, int rotations) {
 		this.z = z;
 		this.x = 192-x; 
 		this.y = y;

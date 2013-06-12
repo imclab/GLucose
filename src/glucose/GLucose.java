@@ -14,6 +14,7 @@
 package glucose;
 
 import glucose.control.SCMidiDevices;
+import glucose.model.Cube;
 import glucose.model.Model;
 import glucose.pattern.SCPattern;
 import glucose.ui.Simulation;
@@ -62,17 +63,24 @@ public class GLucose {
 	 * The simulation renderer
 	 */
 	public final Simulation simulation;
-		
+	
+	/**
+	 * Interface of callbacks to drive placeand output.
+	 */
+	public interface Mapping {
+		public Cube[] buildCubeArray();
+	}
+	
 	/**
 	 * Creates a GLucose instance.
 	 * 
 	 * @param applet
 	 */
-	public GLucose(PApplet applet) {	
+	public GLucose(PApplet applet, Mapping mapping) {	
 		this.applet = applet;
 		
 		// Build the model of the cubes
-		this.model = new Model((PGraphicsOpenGL) this.applet.g);
+		this.model = new Model(mapping, (PGraphicsOpenGL) this.applet.g);
 		
 		// Build simulation render engine
 		this.simulation = new Simulation(this);
