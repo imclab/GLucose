@@ -12,7 +12,7 @@ import javax.media.opengl.GL;
  */
 public class Strip {
 
-	private final int POINTS_PER_STRIP = 16;
+	public static final int POINTS_PER_STRIP = 16;
 		
 	private final Clip clip;
 	

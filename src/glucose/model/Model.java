@@ -84,8 +84,30 @@ public class Model {
 		// points so it is not possible to overwrite fx/fy/fz
 	}
 	
+	/**
+	 * TODO(mcslee): clean this up to internal-only
+	 * 
+	 * @param index
+	 * @return
+	 */
 	public Cube getCubeByRawIndex(int index) {
 		return _cubes[index];
+	}
+	
+	/**
+	 * TODO(mcslee): clean this up to internal-only
+	 * 
+	 * @param index
+	 * @return
+	 */
+	public int getRawIndexForCube(int index) {
+		Cube c = cubes.get(index);
+		for (int i = 0; i < _cubes.length; ++i) {
+			if (c == _cubes[i]) {
+				return i;
+			}
+		}
+		return 0;
 	}
 		
 	/**
