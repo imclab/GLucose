@@ -150,9 +150,6 @@ public class GLucose {
 		}
 		effectKnobs = Collections.unmodifiableList(_effectKnobs);
 
-		
-		// Register callback on every frame
-		applet.registerDraw(this);
 	}
 	
 	/**
@@ -254,13 +251,6 @@ public class GLucose {
 	 * that should not keep running.
 	 */
 	public void dispose() {
-	}
-			
-	/**
-	 * Core drawing callback. Engine automatically runs on every frame.
-	 */
-	public void draw() {
-		this.simulation.draw();
 	}
 
 	/**
