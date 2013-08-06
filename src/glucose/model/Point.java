@@ -50,9 +50,9 @@ public class Point {
 		gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, m, 0);
 
 		// TODO(mcslee): fix this hack, should not have global state for zeroPoint
-		x = m[12] - Model.zeroPoint.x;
-		y = m[13] - Model.zeroPoint.y;
-		z = m[14] - Model.zeroPoint.z;		
+		fx = x = m[12] - Model.zeroPoint.x;
+		fy = y = m[13] - Model.zeroPoint.y;
+		fz = z = m[14] - Model.zeroPoint.z;		
 	}
 		
 	void draw(GL gl, int[] colors, boolean updatePosition) {

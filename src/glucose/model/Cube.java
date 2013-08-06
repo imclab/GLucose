@@ -35,7 +35,7 @@ public class Cube {
 	private final Face[] _faces;
 	
 	// Orientation of this cube in space
-	final float x, y, z, rx, ry, rz;
+	public final float x, y, z, rx, ry, rz;
 	
 	// Scaled position of the center of this cube
 	public float fx, fy, fz;

@@ -22,6 +22,10 @@ public class Model {
 	public final List<Strip> strips;
 	public final List<Point> points;
 	
+	public final float xMin;
+	public final float yMin;
+	public final float zMin; 
+	
 	public final float xMax;
 	public final float yMax;
 	public final float zMax; 
@@ -71,11 +75,18 @@ public class Model {
 		buildGeometry(pgl);
 
 		float _xMax = 0, _yMax = 0, _zMax = 0;
+		float _xMin = Float.MAX_VALUE, _yMin = Float.MAX_VALUE, _zMin = Float.MAX_VALUE;
 		for (Point p : points) {
+			_xMin = Math.min(_xMin, p.fx);
+			_yMin = Math.min(_yMin, p.fy);
+			_zMin = Math.min(_zMin, p.fz);
 			_xMax = Math.max(_xMax, p.fx);
 			_yMax = Math.max(_yMax, p.fy);
 			_zMax = Math.max(_zMax, p.fz);
 		}
+		this.xMin = _xMin;
+		this.yMin = _yMin;
+		this.zMin = _zMin;
 		this.xMax = _xMax;
 		this.yMax = _yMax;
 		this.zMax = _zMax;		
@@ -122,14 +133,15 @@ public class Model {
 		GL gl = pgl.beginGL();
 		draw(gl, colors, true);
 		pgl.endGL();
-		normalizeGeometry();
+		// normalizePoints();
+		normalizeCubes();
 	}
 	
 	/**
 	 * Creates normalized constants for the geometry of all the points, based
 	 * upon a range from 0 to N.
 	 */
-	private void normalizeGeometry() {
+	private void normalizePoints() {
 		float minX, minY, minZ;		
 		minX = minY = minZ = Float.MAX_VALUE;
 		for (Point p : points) {
@@ -144,7 +156,9 @@ public class Model {
 			p.fy = p.y - minY;
 			p.fz = p.z - minZ;
 		}
-				
+	}
+	
+	private void normalizeCubes() {
 		// Set the scaled center positions of all cubes
 		for (Cube c : cubes) {
 			float sx = 0, sy = 0, sz = 0, num = 0;
