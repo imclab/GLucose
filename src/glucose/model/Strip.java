@@ -14,10 +14,7 @@ public class Strip {
 
 	public static final int POINTS_PER_STRIP = 16;
 	
-	public static final float POINT_OFFSET = 1.5f;
 	public static final float POINT_SPACING = 18.625f / 15.f;
-		
-	public static final float CHANNEL_WIDTH = 1.5f;
 		
 	public final boolean isHorizontal;
 	
@@ -41,7 +38,7 @@ public class Strip {
 		float edgeLength = isHorizontal ? Cube.EDGE_WIDTH : Cube.EDGE_HEIGHT;
 		float offset = (edgeLength - (POINTS_PER_STRIP - 1) * POINT_SPACING) / 2.f;
 		gl.glPushMatrix();
-		gl.glTranslatef(offset, CHANNEL_WIDTH/2.f, 0);
+		gl.glTranslatef(offset, Cube.CHANNEL_WIDTH/2.f, 0);
 		for (Point p : this._points) {
 			p.draw(gl, colors, updatePosition);
 			gl.glTranslatef(POINT_SPACING, 0, 0);
