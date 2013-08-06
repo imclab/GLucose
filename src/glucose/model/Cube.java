@@ -8,73 +8,65 @@ import javax.media.opengl.GL;
 
 /**
  * Model of a single cube, which has an orientation and position on the
- * car.
+ * car. The position is specified in x,y,z coordinates with rotation. The
+ * x axis is left->right, y is bottom->top, and z is front->back.
+ * 
+ * A cube's x,y,z position is specified as the left, bottom, front corner.
+ * 
+ * Dimensions are all specified in real-world inches.
  */
 public class Cube {
 	
-	public final static int CLIPS_PER_CUBE = 4;
+	public final static int FACES_PER_CUBE = 4;
+	
+	public final static float EDGE_HEIGHT = 21.75f;
+	public final static float EDGE_WIDTH = 24.625f;
 		
 	// Iterable list of all points in cube
-	public final List<Point> points;
-	
-	// Iterable list of all clips
-	public final List<Clip> clips;
+	public final List<Point> points;	
+
+	// Iterable list of all faces
+	public final List<Face> faces;
 
 	// Iterable list of all strips
 	public final List<Strip> strips;
 	
-	// Each cube has 4 clips to render its faces
-	private final Clip[] _clips;
+	// Each cube has 4 faces
+	private final Face[] _faces;
 	
 	// Orientation of this cube in space
-	float x, y, z, rx, ry, rz;
+	final float x, y, z, rx, ry, rz;
 	
 	// Scaled position of the center of this cube
 	public float fx, fy, fz;
 	
-	// Which is the primary face and how clip is rotated on physical car
-	private boolean flipFlag = false;
-	private int face = 0;
-	private int rotations=0;
-
-	public Cube(double z, double x, double y, double rz, double rx, double ry) {
-		this((float) z, (float) x, (float) y, (float) rz, (float) rx, (float) ry); 
+	public Cube(double x, double y, double z, double rx, double ry, double rz) {
+		this((float) x, (float) y, (float) z, (float) rx, (float) ry, (float) rz); 
 	}
-	
-	public Cube(double z, double x, double y, double rz, double rx, double ry, boolean flipFlag, int face, int rotations) {
-		this((float) z, (float) x, (float) y, (float) rz, (float) rx, (float) ry, flipFlag, face, rotations);
-	}
-	
-	public Cube(float z, float x, float y, float rz, float rx, float ry) {
-		this(z, x, y, rz, rx, ry, false, 0, 0);
-	}
-	
-	public Cube(float z, float x, float y, float rz, float rx, float ry, boolean flipFlag, int face, int rotations) {
-		this.z = z;
-		this.x = 192-x; 
+		
+	public Cube(float x, float y, float z, float rx, float ry, float rz) {
+		this.x = x; 
 		this.y = y;
-		this.rz = rz;
+		this.z = z;
 		this.rx = rx;
 		this.ry = ry;
-		this.flipFlag = flipFlag;
-		this.face = face;
-		this.rotations = rotations;
+		this.rz = rz;
  
+		this._faces = new Face[FACES_PER_CUBE];
 		List<Point> _points = new ArrayList<Point>();
 		List<Strip> _strips = new ArrayList<Strip>();
-		this._clips = new Clip[CLIPS_PER_CUBE];
-		// prolly will have to rotate c's in some odd way
-		for (int i = 0; i < this._clips.length; i++) {
-			this._clips[i] = new Clip(this);
-			for (Strip s : this._clips[i].strips) {
+
+		for (int i = 0; i < this._faces.length; i++) {
+			this._faces[i] = new Face(this);
+			for (Strip s : this._faces[i].strips) {
 				_strips.add(s);
 			}
-			for (Point p : this._clips[i].points) {
+			for (Point p : this._faces[i].points) {
 				_points.add(p);
 			}
-		}
+		}		
 		
-		this.clips = Collections.unmodifiableList(Arrays.asList(this._clips));
+		this.faces = Collections.unmodifiableList(Arrays.asList(this._faces));
 		this.strips = Collections.unmodifiableList(_strips);
 		this.points = Collections.unmodifiableList(_points);
 	}
@@ -82,83 +74,17 @@ public class Cube {
 	void draw(GL gl, int[] colors, boolean updatePosition) {
 		gl.glPushMatrix();
 
-		gl.glTranslatef(z, x, y);
-		gl.glRotatef(rz, 1, 0, 0);
-		gl.glRotatef(rx, 0, 1, 0);
-		gl.glRotatef(ry, 0, 0, 1);
+		gl.glTranslatef(x, -y, z);
+		gl.glRotatef(rx, 1, 0, 0);
+		gl.glRotatef(ry, 0, -1, 0);
+		gl.glRotatef(rz, 0, 0, 1);
 
-		// CHIRALITY OPERATION
-		if (flipFlag) { // left handed orientation, clips rotate clockwise around positive cube z vector
-			gl.glTranslatef(10, 0, 0);
-			gl.glScalef(-1, 1, 1);
-			gl.glTranslatef(-10, 0, 0);
-		}
-
-		// FACE OPERATION - variable face toggles through the 6 possible locations for the "bottom yellow" face in mapper
-		switch (face) {
-		case 0:
-			break;
-		case 1:
-			gl.glTranslatef(10, 0, 10);
-			gl.glRotatef(90, 0, 1, 0);
-			gl.glTranslatef(-10, 0, -10);
-			break;
-		case 2:
-			gl.glTranslatef(0, 10, 10);
-			gl.glRotatef(90, 1, 0, 0);
-			gl.glTranslatef(0, -10, -10);
-			break;
-		case 3:
-			gl.glTranslatef(10, 0, 10);
+		// The first face is head on, the next is round to the right, etc.
+		for (Face f : _faces) {
+			f.draw(gl, colors, updatePosition);
+			gl.glTranslatef(Cube.EDGE_WIDTH, 0, 0);
 			gl.glRotatef(90, 0, -1, 0);
-			gl.glTranslatef(-10, 0, -10);
-			break;
-		case 4:
-			gl.glTranslatef(0, 10, 10);
-			gl.glRotatef(90, -1, 0, 0);
-			gl.glTranslatef(0, -10, -10);
-			break;
-		case 5:
-			gl.glTranslatef(0, 10, 10);
-			gl.glRotatef(180, 1, 0, 0);
-			gl.glTranslatef(0, -10, -10);
-			break;
 		}
-
-		// ROTATIONS OPERATION - rotates about the mapper "bottom yellow" face depending on rotations variable
-		gl.glTranslatef(10, 10, 0);
-		gl.glRotatef(90*rotations, 0, 0, 1);
-		gl.glTranslatef(-10, -10, 0);
-
-		// CLIP ORDERING OPERATIONS - orient the clips as red, green, blue, white (first in...last out) according to mapper
-		gl.glPushMatrix();
-		gl.glTranslatef(0, 0, 20);
-		gl.glRotatef(-90, 1, 0, 0);
-		_clips[0].draw(gl, colors, updatePosition);
-		gl.glPopMatrix();
-
-		gl.glPushMatrix();
-		gl.glTranslatef(20, 0, 20);
-		gl.glRotatef(90, 1, 0, 0);
-		gl.glRotatef(180, 0, 0, 1);
-		gl.glRotatef(90, 0, 1, 0);
-		_clips[1].draw(gl, colors, updatePosition);
-		gl.glPopMatrix();
-
-		gl.glPushMatrix();
-		gl.glTranslatef(20, 20, 20);
-		gl.glRotatef(180, 0, 0, 1);
-		gl.glRotatef(-90, 1, 0, 0);
-		_clips[2].draw(gl, colors, updatePosition);
-		gl.glPopMatrix();
-
-		gl.glPushMatrix();
-		gl.glTranslatef(0, 20, 20);
-		gl.glRotatef(90, 1, 0, 0);
-		gl.glRotatef(180, 0, 0, 1);
-		gl.glRotatef(-90, 0, 1, 0);
-		_clips[3].draw(gl, colors, updatePosition);
-		gl.glPopMatrix();
 		
 		gl.glPopMatrix();
 	}

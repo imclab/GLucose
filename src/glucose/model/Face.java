@@ -7,16 +7,12 @@ import java.util.List;
 import javax.media.opengl.GL;
 
 /**
- * A clip is a component of a cube. It is comprised of three strips forming
- * a shape of the letter C. A whole cube is formed by four clips, which
- * combined comprise all 12 visible edges of a cube.
- * 
- * The best way to remember what a Clip means is to recall that it starts
- * with C. Clip starts with C, it's lights in the shape of a C.
+ * A face is a component of a cube. It is comprised of four strips forming
+ * the lights on this side of a cube. A whole cube is formed by four faces.
  */
-public class Clip {
+public class Face {
 
-	public final static int STRIPS_PER_CLIP = 3;
+	public final static int STRIPS_PER_FACE = 4;
 		
 	// All points in this clip
 	public final List<Point> points; 
@@ -30,12 +26,12 @@ public class Clip {
 	// Strips in this clip, each comprised of three
 	private final Strip[] _strips;
 	
-	Clip(Cube cube) {
+	Face(Cube cube) {
 		this.cube = cube;
 		List<Point> _points = new ArrayList<Point>();
-		this._strips = new Strip[STRIPS_PER_CLIP];
+		this._strips = new Strip[STRIPS_PER_FACE];
 		for (int i = 0; i < this._strips.length; i++) {
-			this._strips[i] = new Strip(this);
+			this._strips[i] = new Strip(this, (i % 2 == 0));
 			for (Point p : this._strips[i].points) {
 				_points.add(p);
 			}
@@ -46,9 +42,10 @@ public class Clip {
 		
 	void draw(GL gl, int[] colors, boolean updatePosition) {
 		gl.glPushMatrix();
+		gl.glTranslatef(0, -Cube.EDGE_HEIGHT, 0);
 		for (Strip s : this._strips) {
 			s.draw(gl, colors, updatePosition);
-			gl.glTranslatef(20, 0, 0);
+			gl.glTranslatef(s.isHorizontal ? Cube.EDGE_WIDTH : Cube.EDGE_HEIGHT, 0, 0);
 			gl.glRotatef(90, 0, 0, 1);
 		}
 		gl.glPopMatrix();

@@ -28,7 +28,7 @@ public class Point {
 	private boolean mark = false;
 	private boolean mapped = true;
 		
-	private final List<Point> neighbors= new ArrayList<Point>();  
+	private final List<Point> neighbors = new ArrayList<Point>();  
 
 	Point() {
 		this(null);
@@ -50,22 +50,14 @@ public class Point {
 		gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, m, 0);
 
 		// TODO(mcslee): fix this hack, should not have global state for zeroPoint
-		x = m[13] - Model.zeroPoint.x;
-		y = m[14] - Model.zeroPoint.y;
-		z = m[12] - Model.zeroPoint.z;		
+		x = m[12] - Model.zeroPoint.x;
+		y = m[13] - Model.zeroPoint.y;
+		z = m[14] - Model.zeroPoint.z;		
 	}
 		
 	void draw(GL gl, int[] colors, boolean updatePosition) {
 		gl.glBegin(GL.GL_POINTS);
-		
-		// TODO(mcslee): update, should be an FX, not inside draw
-//		for (PostProcessor post : postprocessors) {
-//			float[] rgb = post.filter(this);
-//			r = rgb[0];
-//			g = rgb[1];
-//			b = rgb[2];
-//		}  
-		
+				
 		int c = (index < 0) ? 0 : colors[index];
 		byte a = (byte) ((c >> 24) & 0xFF);
 		byte r = (byte) ((c >> 16) & 0xFF);

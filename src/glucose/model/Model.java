@@ -12,13 +12,13 @@ import java.util.List;
 
 /**
  * Top-level model of the entire art car. This contains a list of
- * every cube on the car, which forms a hierarchy of clips, strips
+ * every cube on the car, which forms a hierarchy of faces, strips
  * and points.
  */
 public class Model {
 		
 	public final List<Cube> cubes;
-	public final List<Clip> clips;
+	public final List<Face> faces;
 	public final List<Strip> strips;
 	public final List<Point> points;
 	
@@ -40,15 +40,15 @@ public class Model {
 
 		// Make unmodifiable accessors to the model data
 		List<Cube> cubeList = new ArrayList<Cube>();
-		List<Clip> clipList = new ArrayList<Clip>();
+		List<Face> faceList = new ArrayList<Face>();
 		List<Strip> stripList = new ArrayList<Strip>();
 		List<Point> pointList = new ArrayList<Point>();
 		for (Cube cube : _cubes) {
 			if (cube != null) {
 				cubeList.add(cube);
-				for (Clip clip : cube.clips) {
-					clipList.add(clip);
-					for (Strip strip : clip.strips) {
+				for (Face face : cube.faces) {
+					faceList.add(face);
+					for (Strip strip : face.strips) {
 						stripList.add(strip);
 						for (Point point : strip.points) {
 							pointList.add(point);
@@ -59,7 +59,7 @@ public class Model {
 		}
 		
 		cubes = Collections.unmodifiableList(cubeList);
-		clips = Collections.unmodifiableList(clipList);
+		faces = Collections.unmodifiableList(faceList);
 		strips = Collections.unmodifiableList(stripList);
 		points = Collections.unmodifiableList(pointList);
 		
@@ -130,20 +130,19 @@ public class Model {
 	 * upon a range from 0 to N.
 	 */
 	private void normalizeGeometry() {
-		float minY, maxX, maxZ;		
-		minY = Float.MAX_VALUE;
-		maxX = maxZ = Float.MIN_VALUE;
+		float minX, minY, minZ;		
+		minX = minY = minZ = Float.MAX_VALUE;
 		for (Point p : points) {
+			minX = Math.min(minX, p.x);
 			minY = Math.min(minY, p.y);
-			maxX = Math.max(maxX, p.x);
-			maxZ = Math.max(maxZ, p.z);
+			minZ = Math.min(minZ, p.z);
 		}
 		
 		// Set the normalized position values of all cubes
 		for (Point p : points) {
-			p.fx = maxX - p.x;
+			p.fx = p.x - minX;
 			p.fy = p.y - minY;
-			p.fz = maxZ - p.z;
+			p.fz = p.z - minZ;
 		}
 				
 		// Set the scaled center positions of all cubes

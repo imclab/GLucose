@@ -2,7 +2,7 @@ package glucose.pattern;
 
 import glucose.GLucose;
 import glucose.model.Cube;
-import glucose.model.Clip;
+import glucose.model.Face;
 import glucose.model.Model;
 import glucose.model.Point;
 import glucose.model.Strip;
@@ -34,8 +34,8 @@ public abstract class SCPattern extends LXPattern {
 		}
 	}	
 	
-	protected void setColor(Clip clip, int c) {
-		for (Point p : clip.points) {
+	protected void setColor(Face face, int c) {
+		for (Point p : face.points) {
 			colors[p.index] = c;
 		}
 	}
