@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.media.opengl.GL;
 
 /**
  * A face is a component of a cube. It is comprised of four strips forming
@@ -26,29 +25,25 @@ public class Face {
 	// Strips in this clip, each comprised of three
 	private final Strip[] _strips;
 	
-	Face(Cube cube) {
+	Face(Cube cube, Transform transform) {
 		this.cube = cube;
 		List<Point> _points = new ArrayList<Point>();
 		this._strips = new Strip[STRIPS_PER_FACE];
+		transform.push();
+		transform.translate(0, Cube.EDGE_HEIGHT, 0);
 		for (int i = 0; i < this._strips.length; i++) {
-			this._strips[i] = new Strip(this, (i % 2 == 0));
+			boolean isHorizontal = (i % 2 == 0);
+			this._strips[i] = new Strip(this, transform, isHorizontal);
+			transform.translate(isHorizontal ? Cube.EDGE_WIDTH : Cube.EDGE_HEIGHT, 0, 0);
+			transform.rotateZ(Math.PI/2.);
 			for (Point p : this._strips[i].points) {
 				_points.add(p);
 			}
 		}
+		transform.pop();
+		
 		this.strips = Collections.unmodifiableList(Arrays.asList(this._strips));
 		this.points = Collections.unmodifiableList(_points);
-	}
-		
-	void draw(GL gl, int[] colors, boolean updatePosition) {
-		gl.glPushMatrix();
-		gl.glTranslatef(0, -Cube.EDGE_HEIGHT, 0);
-		for (Strip s : this._strips) {
-			s.draw(gl, colors, updatePosition);
-			gl.glTranslatef(s.isHorizontal ? Cube.EDGE_WIDTH : Cube.EDGE_HEIGHT, 0, 0);
-			gl.glRotatef(90, 0, 0, 1);
-		}
-		gl.glPopMatrix();
 	}
 	
 }

@@ -22,7 +22,6 @@ import glucose.model.Cube;
 import glucose.model.Model;
 
 import glucose.pattern.SCPattern;
-import glucose.ui.Simulation;
 
 import heronarts.lx.HeronLX;
 import heronarts.lx.effect.LXEffect;
@@ -32,7 +31,6 @@ import heronarts.lx.transition.LXTransition;
 import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
-import processing.opengl.PGraphicsOpenGL;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -84,12 +82,7 @@ public class GLucose {
 	 * The model of the entire car
 	 */
 	public final Model model;
-	
-	/**
-	 * The simulation renderer
-	 */
-	public final Simulation simulation;
-	
+		
 	/**
 	 * Currently selected effect.
 	 */
@@ -123,11 +116,8 @@ public class GLucose {
 		this.mapping = mapping;
 		
 		// Build the model of the cubes
-		this.model = new Model(mapping, (PGraphicsOpenGL) this.applet.g);
-		
-		// Build simulation render engine
-		this.simulation = new Simulation(this);
-				
+		this.model = new Model(mapping);
+						
 		// Build an LX instance for pattern and pixel state
 		this.lx = new HeronLX(applet, this.model.points.size(), 1);
 		this.lx.enableSimulation(false);

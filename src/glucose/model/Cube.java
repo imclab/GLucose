@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.media.opengl.GL;
 
 /**
  * Model of a single cube, which has an orientation and position on the
@@ -38,8 +37,8 @@ public class Cube {
 	// Orientation of this cube in space
 	public final float x, y, z, rx, ry, rz;
 	
-	// Scaled position of the center of this cube
-	public float fx, fy, fz;
+	// Position of the center of this cube
+	public final float cx, cy, cz;
 	
 	public Cube(double x, double y, double z, double rx, double ry, double rz) {
 		this((float) x, (float) y, (float) z, (float) rx, (float) ry, (float) rz); 
@@ -52,42 +51,36 @@ public class Cube {
 		this.rx = rx;
 		this.ry = ry;
 		this.rz = rz;
+		
+		Transform t = new Transform();
+		t.translate(x, y, z);
+		t.rotateX(rx * Math.PI / 180.);
+		t.rotateY(ry*Math.PI / 180.);
+		t.rotateZ(rz*Math.PI / 180.);		
  
 		this._faces = new Face[FACES_PER_CUBE];
 		List<Point> _points = new ArrayList<Point>();
 		List<Strip> _strips = new ArrayList<Strip>();
 
 		for (int i = 0; i < this._faces.length; i++) {
-			this._faces[i] = new Face(this);
+			this._faces[i] = new Face(this, t);
 			for (Strip s : this._faces[i].strips) {
 				_strips.add(s);
 			}
 			for (Point p : this._faces[i].points) {
 				_points.add(p);
 			}
-		}		
+			t.translate(EDGE_WIDTH, 0, 0);
+			t.rotateY(Math.PI / 2.);
+		}
+		
+		t.translate(EDGE_WIDTH/2., EDGE_HEIGHT/2., EDGE_WIDTH/2.);
+		cx = (float)t.x();
+		cy = (float)t.y();
+		cz = (float)t.z();
 		
 		this.faces = Collections.unmodifiableList(Arrays.asList(this._faces));
 		this.strips = Collections.unmodifiableList(_strips);
 		this.points = Collections.unmodifiableList(_points);
 	}
-	
-	void draw(GL gl, int[] colors, boolean updatePosition) {
-		gl.glPushMatrix();
-
-		gl.glTranslatef(x, -y, z);
-		gl.glRotatef(rx, 1, 0, 0);
-		gl.glRotatef(ry, 0, -1, 0);
-		gl.glRotatef(rz, 0, 0, 1);
-
-		// The first face is head on, the next is round to the right, etc.
-		for (Face f : _faces) {
-			f.draw(gl, colors, updatePosition);
-			gl.glTranslatef(Cube.EDGE_WIDTH, 0, 0);
-			gl.glRotatef(90, 0, -1, 0);
-		}
-		
-		gl.glPopMatrix();
-	}
-
 }

@@ -11,14 +11,12 @@ import java.util.Iterator;
 public class Projection implements Iterable<Coord> {
 
 	final private Coord[] coords;
-	final private Model model;
 	
 	public Iterator<Coord> iterator() {
 		return Arrays.asList(coords).iterator();
 	}
-
+	
 	public Projection(Model model) {
-		this.model = model;
 		coords = new Coord[model.points.size()];
 		int i = 0;
 		for (Point p : model.points) {
@@ -55,11 +53,11 @@ public class Projection implements Iterable<Coord> {
 		return this;
 	}
 	
-	public Projection center() {
+	public Projection center(Model model) {
 		return translate(-model.xMax/2.f, -model.yMax/2.f, -model.zMax/2.f);
 	}
 
-	public Projection translateCenter(float tx, float ty, float tz) {
+	public Projection translateCenter(Model model, float tx, float ty, float tz) {
 		return translate(-model.xMax/2.f + tx, -model.yMax/2.f + ty, -model.zMax/2.f + tz);
 	}
 

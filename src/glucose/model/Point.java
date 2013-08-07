@@ -3,8 +3,6 @@ package glucose.model;
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.media.opengl.GL;
-
 /**
  * A Point is a single addressable LED light on the structure.
  */
@@ -20,56 +18,19 @@ public class Point {
 	public final int index;
 	
 	// Position in raw coordinate space
-	float x, y, z;
+	public final float x, y, z;
 	
-	// Positions, scaled onto 128/255 shape
-	public float fx, fy, fz;
+	// Same as the above, here for legacy reasons
+	public final float fx, fy, fz;
 	
-	private boolean mark = false;
-	private boolean mapped = true;
-		
-	private final List<Point> neighbors = new ArrayList<Point>();  
-
-	Point() {
-		this(null);
-	}
-	
-	Point(Strip strip) {
+	Point(Strip strip, Transform transform) {
 		this.strip = strip;
-		x = y = z = fx = fy = fz = 0;
-		// Only add real model points to the list
-		if (strip != null) {
-			index = Point.counter++;
-		} else {
-			index = -1;
-		}
-	}
-				
-	void updatePosition(GL gl) {
-		float m[] = new float[16];
-		gl.glGetFloatv(GL.GL_MODELVIEW_MATRIX, m, 0);
-
-		// TODO(mcslee): fix this hack, should not have global state for zeroPoint
-		fx = x = m[12] - Model.zeroPoint.x;
-		fy = y = m[13] - Model.zeroPoint.y;
-		fz = z = m[14] - Model.zeroPoint.z;		
-	}
 		
-	void draw(GL gl, int[] colors, boolean updatePosition) {
-		gl.glBegin(GL.GL_POINTS);
-				
-		int c = (index < 0) ? 0 : colors[index];
-		byte a = (byte) ((c >> 24) & 0xFF);
-		byte r = (byte) ((c >> 16) & 0xFF);
-		byte g = (byte) ((c >> 8) & 0xFF);
-		byte b = (byte) ((c) & 0xFF);
-		gl.glColor4ub(r, g, b, a);
-				
-		gl.glVertex3f(0, 0, 0);
-		gl.glEnd();
+		x = fx = (float) transform.x();
+		y = fy = (float) transform.y();
+		z = fz = (float) transform.z();
 		
-		if (updatePosition) { 
-			updatePosition(gl);
-		}
+		index = Point.counter++;
 	}
+				
 }

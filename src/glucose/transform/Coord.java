@@ -6,7 +6,7 @@ public class Coord {
 
 	public float x, y, z;
 	public final int index;
-
+	
 	public Coord(Point p) {
 		x = p.fx;
 		y = p.fy;
