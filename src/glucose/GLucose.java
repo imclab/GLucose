@@ -29,8 +29,6 @@ import heronarts.lx.pattern.LXPattern;
 import heronarts.lx.transition.LXTransition;
 
 import processing.core.PApplet;
-import processing.core.PConstants;
-import processing.core.PGraphics;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -60,7 +58,6 @@ public class GLucose {
 		public Cube[] buildCubeArray();
 		public int[][] buildFrontChannelList();
 		public int[][] buildRearChannelList();
-		public int[][] buildFlippedRGBList();
 	}
 	
 	/**
