@@ -50,13 +50,6 @@ public class GLucose {
 	public static String version() {
 		return VERSION;
 	}
-
-	/**
-	 * Interface of callbacks to drive placement and output.
-	 */
-	public interface Mapping {
-		public Cube[] buildCubeArray();
-	}
 	
 	/**
 	 * A reference to the applet context.
@@ -67,11 +60,6 @@ public class GLucose {
 	 * The HeronLX engine running patterns and effects
 	 */
 	public final HeronLX lx;
-	
-	/**
-	 * The mapping object
-	 */
-	public final Mapping mapping;
 	
 	/**
 	 * The model of the entire car
@@ -106,12 +94,11 @@ public class GLucose {
 	 * 
 	 * @param applet
 	 */
-	public GLucose(PApplet applet, Mapping mapping) {	
+	public GLucose(PApplet applet, Model model) {	
 		this.applet = applet;
-		this.mapping = mapping;
 		
-		// Build the model of the cubes
-		this.model = new Model(mapping);
+		// The model of the cubes
+		this.model = model;
 						
 		// Build an LX instance for pattern and pixel state
 		this.lx = new HeronLX(applet, this.model.points.size(), 1);

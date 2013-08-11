@@ -1,8 +1,7 @@
 package glucose.model;
 
-import glucose.GLucose;
-
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,7 +11,8 @@ import java.util.List;
  * and points.
  */
 public class Model {
-		
+	
+	public final List<Tower> towers;
 	public final List<Cube> cubes;
 	public final List<Face> faces;
 	public final List<Strip> strips;
@@ -28,9 +28,9 @@ public class Model {
 	
 	private final Cube[] _cubes;
 		
-	public Model(GLucose.Mapping mapping) {
+	public Model(ArrayList<Tower> towerList, Cube[] cubeArr) {
 		
-		_cubes = mapping.buildCubeArray();
+		_cubes = cubeArr;
 
 		// Make unmodifiable accessors to the model data
 		List<Cube> cubeList = new ArrayList<Cube>();
@@ -52,10 +52,11 @@ public class Model {
 			}
 		}
 		
-		cubes = Collections.unmodifiableList(cubeList);
-		faces = Collections.unmodifiableList(faceList);
-		strips = Collections.unmodifiableList(stripList);
-		points = Collections.unmodifiableList(pointList);
+		this.towers = Collections.unmodifiableList(towerList);
+		this.cubes = Collections.unmodifiableList(cubeList);
+		this.faces = Collections.unmodifiableList(faceList);
+		this.strips = Collections.unmodifiableList(stripList);
+		this.points = Collections.unmodifiableList(pointList);
 
 		float _xMax = 0, _yMax = 0, _zMax = 0;
 		float _xMin = Float.MAX_VALUE, _yMin = Float.MAX_VALUE, _zMin = Float.MAX_VALUE;

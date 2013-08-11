@@ -23,7 +23,7 @@ public class Cube {
 	public final static float EDGE_HEIGHT = 21.75f;
 	public final static float EDGE_WIDTH = 24.625f;
 	public final static float CHANNEL_WIDTH = 1.5f;
-	
+		
 	// Iterable list of all points in cube
 	public final List<Point> points;	
 
