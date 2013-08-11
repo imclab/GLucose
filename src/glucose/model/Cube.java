@@ -17,6 +17,8 @@ import java.util.List;
 public class Cube {
 	
 	public final static int FACES_PER_CUBE = 4;
+	public final static int STRIPS_PER_CUBE = FACES_PER_CUBE*Face.STRIPS_PER_FACE;
+	public final static int POINTS_PER_CUBE = STRIPS_PER_CUBE*Strip.POINTS_PER_STRIP;
 	
 	public final static float EDGE_HEIGHT = 21.75f;
 	public final static float EDGE_WIDTH = 24.625f;
