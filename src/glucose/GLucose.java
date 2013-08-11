@@ -56,8 +56,6 @@ public class GLucose {
 	 */
 	public interface Mapping {
 		public Cube[] buildCubeArray();
-		public int[][] buildFrontChannelList();
-		public int[][] buildRearChannelList();
 	}
 	
 	/**
