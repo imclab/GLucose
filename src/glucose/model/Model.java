@@ -24,7 +24,11 @@ public class Model {
 	
 	public final float xMax;
 	public final float yMax;
-	public final float zMax; 
+	public final float zMax;
+	
+	public final float cx;
+	public final float cy;
+	public final float cz;
 	
 	private final Cube[] _cubes;
 		
@@ -74,6 +78,9 @@ public class Model {
 		this.xMax = _xMax;
 		this.yMax = _yMax;
 		this.zMax = _zMax;
+		this.cx = (_xMin + _xMax) / 2.f;
+		this.cy = (_yMin + _yMax) / 2.f;
+		this.cz = (_zMin + _zMax) / 2.f;
 	}
 	
 	/**
