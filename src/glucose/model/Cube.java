@@ -23,7 +23,16 @@ public class Cube {
 	public final static float EDGE_HEIGHT = 21.75f;
 	public final static float EDGE_WIDTH = 24.625f;
 	public final static float CHANNEL_WIDTH = 1.5f;
-		
+	
+	public enum Wiring {
+		FRONT_LEFT,
+		FRONT_RIGHT,
+		REAR_LEFT,
+		REAR_RIGHT,
+	};
+	
+	public final Wiring wiring;
+	
 	// Iterable list of all points in cube
 	public final List<Point> points;	
 
@@ -47,6 +56,11 @@ public class Cube {
 	}
 		
 	public Cube(float x, float y, float z, float rx, float ry, float rz) {
+		this(x, y, z, rx, ry, rz, Wiring.FRONT_LEFT);
+	}
+	
+	public Cube(float x, float y, float z, float rx, float ry, float rz, Wiring wiring) {
+		this.wiring = wiring;
 		this.x = x; 
 		this.y = y;
 		this.z = z;
