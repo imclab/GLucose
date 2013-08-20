@@ -131,6 +131,7 @@ public class BassBox {
 		}
 		
 		t.pop();
+		
 		t.translate(EDGE_WIDTH/2., EDGE_HEIGHT/2., EDGE_DEPTH/2.);
 		cx = (float)t.x();
 		cy = (float)t.y();

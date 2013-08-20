@@ -6,18 +6,18 @@ import java.util.Collections;
 import java.util.List;
 
 public class Speaker {
-	public static final float EDGE_WIDTH = 45.25f;
-	public static final float EDGE_HEIGHT = 54.375f;
+	public static final float EDGE_WIDTH = 54.375f;
+	public static final float EDGE_HEIGHT = 45.25f;
 	public static final float EDGE_DEPTH = 33.75f;
 			
 	public static final Face.Metrics FRONT_FACE_METRICS = new Face.Metrics(
-		new Strip.Metrics(EDGE_WIDTH, 31),
-		new Strip.Metrics(EDGE_HEIGHT, 41)
+		new Strip.Metrics(EDGE_WIDTH, 41),
+		new Strip.Metrics(EDGE_HEIGHT, 31)
 	);
 		
 	public static final Face.Metrics SIDE_FACE_METRICS = new Face.Metrics(
 		new Strip.Metrics(EDGE_DEPTH, 25),
-		new Strip.Metrics(EDGE_HEIGHT, 41)
+		new Strip.Metrics(EDGE_HEIGHT, 31)
 	);
 	
 	// Iterable list of all faces
@@ -62,8 +62,8 @@ public class Speaker {
 			t.translate(metrics.horizontal.length, 0, 0);
 			t.rotateY(Math.PI / 2.);
 		}
-		
 		t.pop();
+		
 		t.translate(EDGE_WIDTH/2., EDGE_HEIGHT/2., EDGE_DEPTH/2.);
 		cx = (float)t.x();
 		cy = (float)t.y();

@@ -42,19 +42,20 @@ public class Strip {
 			ay += p.y;
 			az += p.z;
 		}
-		cx = ax / (float) points.size();
-		cy = ay / (float) points.size();
-		cz = az / (float) points.size();
+		cx = ax / (float) metrics.numPoints;
+		cy = ay / (float) metrics.numPoints;
+		cz = az / (float) metrics.numPoints;
 	}
 	
 	Strip(Metrics metrics, Transform transform, boolean isHorizontal) {
 		this.metrics = metrics;
 		this.isHorizontal = isHorizontal;
 		Point[] _points = new Point[metrics.numPoints];
-		float ax=0, ay=0, az=0;
 		
 		float offset = (metrics.length - (metrics.numPoints - 1) * POINT_SPACING) / 2.f;		
 		
+		float ax=0, ay=0, az=0;
+		int ai = 0;
 		transform.push();
 		transform.translate(offset, -Cube.CHANNEL_WIDTH/2.f, 0);
 		for (int i = 0; i < _points.length; i++) {
@@ -63,15 +64,14 @@ public class Strip {
 			ax += p.x;
 			ay += p.y;
 			az += p.z;
-			
+			++ai;
 			transform.translate(POINT_SPACING, 0, 0);			
 		}
 		transform.pop();
-		
-		// Compute center position of the strip
-		cx = ax / (float) metrics.numPoints;
-		cy = ax / (float) metrics.numPoints;
-		cz = ax / (float) metrics.numPoints;		
+				
+		cx = ax / (float)ai;
+		cy = ay / (float)ai;
+		cz = az / (float)ai;
 		
 		points = Collections.unmodifiableList(Arrays.asList(_points));
 	}

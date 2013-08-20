@@ -38,10 +38,10 @@ public class Face {
 	Face(Metrics metrics, Transform transform) {
 		List<Point> _points = new ArrayList<Point>();
 		this._strips = new Strip[STRIPS_PER_FACE];
-		float ax=0, ay=0, az=0;
-		int ai = 0;
 		transform.push();
 		transform.translate(0, metrics.vertical.length, 0);
+		float ax=0, ay=0, az=0;
+		int ai = 0;
 		for (int i = 0; i < this._strips.length; i++) {
 			boolean isHorizontal = (i % 2 == 0);
 			Strip.Metrics stripMetrics = isHorizontal ? metrics.horizontal : metrics.vertical;
