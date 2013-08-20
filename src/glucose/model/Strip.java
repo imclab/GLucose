@@ -14,14 +14,16 @@ public class Strip {
 	
 	public static class Metrics {
 		
-		final float length;
-		final int numPoints;
+		public final float length;
+		public final int numPoints;
 		
 		public Metrics(float length, int numPoints) {
 			this.length = length;
 			this.numPoints = numPoints;
 		}
 	}
+	
+	public final Metrics metrics;
 	
 	public final boolean isHorizontal;
 	
@@ -32,6 +34,7 @@ public class Strip {
 	private final Point[] _points;
 	
 	Strip(Metrics metrics, Transform transform, boolean isHorizontal) {
+		this.metrics = metrics;
 		this.isHorizontal = isHorizontal;
 		this._points = new Point[metrics.numPoints];
 		float ax=0, ay=0, az=0;
