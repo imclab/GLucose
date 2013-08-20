@@ -20,6 +20,7 @@ public class Model {
 	
 	public final List<Speaker> speakers;
 	public final BassBox bassBox;
+	public final BoothFloor boothFloor;
 	
 	public final float xMin;
 	public final float yMin;
@@ -40,6 +41,7 @@ public class Model {
 		_cubes = cubeArr;
 		this.bassBox = bassBox;
 		this.speakers = Collections.unmodifiableList(speakers);
+		this.boothFloor = new BoothFloor(bassBox);
 
 		// Make unmodifiable accessors to the model data
 		List<Cube> cubeList = new ArrayList<Cube>();
@@ -67,7 +69,12 @@ public class Model {
 		for (Point point : bassBox.points) {
 			pointList.add(point);
 		}
-		
+		for (Strip strip : boothFloor.strips) {
+			stripList.add(strip);
+		}
+		for (Point point : boothFloor.points) {
+			pointList.add(point);
+		}
 		for (Speaker speaker : speakers) {
 			for (Strip strip : speaker.strips) {
 				stripList.add(strip);
