@@ -17,6 +17,8 @@ public class Model {
 	public final List<Face> faces;
 	public final List<Strip> strips;
 	public final List<Point> points;
+	
+	public final List<Speaker> speakers;
 	public final BassBox bassBox;
 	
 	public final float xMin;
@@ -33,10 +35,11 @@ public class Model {
 	
 	private final Cube[] _cubes;
 		
-	public Model(ArrayList<Tower> towerList, Cube[] cubeArr, BassBox bassBox) {
+	public Model(ArrayList<Tower> towerList, Cube[] cubeArr, BassBox bassBox, List<Speaker> speakers) {
 		
 		_cubes = cubeArr;
 		this.bassBox = bassBox;
+		this.speakers = Collections.unmodifiableList(speakers);
 
 		// Make unmodifiable accessors to the model data
 		List<Cube> cubeList = new ArrayList<Cube>();
@@ -60,6 +63,11 @@ public class Model {
 		
 		for (Point point : bassBox.points) {
 			pointList.add(point);
+		}
+		for (Speaker speaker : speakers) {
+			for (Point point : speaker.points) {
+				pointList.add(point);
+			}
 		}
 		
 		this.towers = Collections.unmodifiableList(towerList);
