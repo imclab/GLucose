@@ -9,29 +9,34 @@ import java.util.List;
  * A strip is a linear run of points along a single edge of one cube.
  */
 public class Strip {
-
-	public static final int POINTS_PER_STRIP = 16;
 	
 	public static final float POINT_SPACING = 18.625f / 15.f;
+	
+	public static class Metrics {
 		
+		final float length;
+		final int numPoints;
+		
+		public Metrics(float length, int numPoints) {
+			this.length = length;
+			this.numPoints = numPoints;
+		}
+	}
+	
 	public final boolean isHorizontal;
 	
 	public final float cx, cy, cz;
-	
-	private final Face face;
-	
+		
 	public final List<Point> points;
 	
 	private final Point[] _points;
 	
-	Strip(Face face, Transform transform, boolean isHorizontal) {
-		this.face = face;
+	Strip(Metrics metrics, Transform transform, boolean isHorizontal) {
 		this.isHorizontal = isHorizontal;
-		this._points = new Point[POINTS_PER_STRIP];
+		this._points = new Point[metrics.numPoints];
 		float ax=0, ay=0, az=0;
 		
-		float edgeLength = isHorizontal ? Cube.EDGE_WIDTH : Cube.EDGE_HEIGHT;
-		float offset = (edgeLength - (POINTS_PER_STRIP - 1) * POINT_SPACING) / 2.f;		
+		float offset = (metrics.length - (metrics.numPoints - 1) * POINT_SPACING) / 2.f;		
 		
 		transform.push();
 		transform.translate(offset, -Cube.CHANNEL_WIDTH/2.f, 0);
@@ -47,9 +52,9 @@ public class Strip {
 		transform.pop();
 		
 		// Compute center position of the strip
-		cx = ax / (float)POINTS_PER_STRIP;
-		cy = ax / (float)POINTS_PER_STRIP;
-		cz = ax / (float)POINTS_PER_STRIP;		
+		cx = ax / (float) metrics.numPoints;
+		cy = ax / (float) metrics.numPoints;
+		cz = ax / (float) metrics.numPoints;		
 		
 		points = Collections.unmodifiableList(Arrays.asList(_points));
 	}

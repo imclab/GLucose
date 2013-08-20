@@ -15,14 +15,22 @@ import java.util.List;
  * Dimensions are all specified in real-world inches.
  */
 public class Cube {
+
+	public final static int FACES_PER_CUBE = 4;	
+	public static final int POINTS_PER_STRIP = 16;
 	
-	public final static int FACES_PER_CUBE = 4;
 	public final static int STRIPS_PER_CUBE = FACES_PER_CUBE*Face.STRIPS_PER_FACE;
-	public final static int POINTS_PER_CUBE = STRIPS_PER_CUBE*Strip.POINTS_PER_STRIP;
+	public final static int POINTS_PER_CUBE = STRIPS_PER_CUBE*POINTS_PER_STRIP;
+	public final static int POINTS_PER_FACE = Face.STRIPS_PER_FACE*POINTS_PER_STRIP;
 	
 	public final static float EDGE_HEIGHT = 21.75f;
 	public final static float EDGE_WIDTH = 24.625f;
 	public final static float CHANNEL_WIDTH = 1.5f;
+	
+	public final static Face.Metrics FACE_METRICS = new Face.Metrics(
+		new Strip.Metrics(EDGE_WIDTH, POINTS_PER_STRIP),
+		new Strip.Metrics(EDGE_HEIGHT, POINTS_PER_STRIP)
+	);
 	
 	public enum Wiring {
 		FRONT_LEFT,
@@ -41,10 +49,7 @@ public class Cube {
 
 	// Iterable list of all strips
 	public final List<Strip> strips;
-	
-	// Each cube has 4 faces
-	private final Face[] _faces;
-	
+		
 	// Orientation of this cube in space
 	public final float x, y, z, rx, ry, rz;
 	
@@ -70,20 +75,20 @@ public class Cube {
 		
 		Transform t = new Transform();
 		t.translate(x, y, z);
-		t.rotateX(rx * Math.PI / 180.);
+		t.rotateX(rx*Math.PI / 180.);
 		t.rotateY(ry*Math.PI / 180.);
 		t.rotateZ(rz*Math.PI / 180.);		
  
-		this._faces = new Face[FACES_PER_CUBE];
+		Face[] _faces = new Face[FACES_PER_CUBE];
 		List<Point> _points = new ArrayList<Point>();
 		List<Strip> _strips = new ArrayList<Strip>();
 
-		for (int i = 0; i < this._faces.length; i++) {
-			this._faces[i] = new Face(this, t);
-			for (Strip s : this._faces[i].strips) {
+		for (int i = 0; i < _faces.length; i++) {
+			_faces[i] = new Face(FACE_METRICS, t);
+			for (Strip s : _faces[i].strips) {
 				_strips.add(s);
 			}
-			for (Point p : this._faces[i].points) {
+			for (Point p : _faces[i].points) {
 				_points.add(p);
 			}
 			t.translate(EDGE_WIDTH, 0, 0);
@@ -95,7 +100,7 @@ public class Cube {
 		cy = (float)t.y();
 		cz = (float)t.z();
 		
-		this.faces = Collections.unmodifiableList(Arrays.asList(this._faces));
+		this.faces = Collections.unmodifiableList(Arrays.asList(_faces));
 		this.strips = Collections.unmodifiableList(_strips);
 		this.points = Collections.unmodifiableList(_points);
 	}
