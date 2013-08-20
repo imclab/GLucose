@@ -30,22 +30,36 @@ public class Strip {
 	public final float cx, cy, cz;
 		
 	public final List<Point> points;
-	
-	private final Point[] _points;
+		
+	Strip(Metrics metrics, List<Point> points, boolean isHorizontal) {
+		this.isHorizontal = isHorizontal;
+		this.metrics = metrics;
+		this.points = Collections.unmodifiableList(points);
+		
+		float ax=0, ay=0, az=0;
+		for (Point p : points) {
+			ax += p.x;
+			ay += p.y;
+			az += p.z;
+		}
+		cx = ax / (float) points.size();
+		cy = ay / (float) points.size();
+		cz = az / (float) points.size();
+	}
 	
 	Strip(Metrics metrics, Transform transform, boolean isHorizontal) {
 		this.metrics = metrics;
 		this.isHorizontal = isHorizontal;
-		this._points = new Point[metrics.numPoints];
+		Point[] _points = new Point[metrics.numPoints];
 		float ax=0, ay=0, az=0;
 		
 		float offset = (metrics.length - (metrics.numPoints - 1) * POINT_SPACING) / 2.f;		
 		
 		transform.push();
 		transform.translate(offset, -Cube.CHANNEL_WIDTH/2.f, 0);
-		for (int i = 0; i < this._points.length; i++) {
+		for (int i = 0; i < _points.length; i++) {
 			Point p = new Point(this, transform);
-			this._points[i] = p;
+			_points[i] = p;
 			ax += p.x;
 			ay += p.y;
 			az += p.z;

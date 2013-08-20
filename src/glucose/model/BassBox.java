@@ -1,5 +1,7 @@
 package glucose.model;
 
+import glucose.model.Strip.Metrics;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,6 +38,9 @@ public class BassBox {
 	// Iterable list of all strips
 	public final List<Strip> strips;
 	
+	// Iterable list of all virtual "box-size" strips
+	public final List<Strip> boxStrips;
+	
 	// Iterable list of all points
 	public final List<Point> points;
 		
@@ -48,6 +53,7 @@ public class BassBox {
 		this.z = z;
 
 		Face[] _faces = new Face[4];
+		List<Strip> _boxStrips = new ArrayList<Strip>();
 		List<Strip> _strips = new ArrayList<Strip>();
 		List<Point> _points = new ArrayList<Point>();
 
@@ -55,16 +61,53 @@ public class BassBox {
 		t.translate(x, y, z);		
 		
 		t.push();
-		for (int i = 0; i < _faces.length; ++i) {
-			boolean isSide = (i % 2) == 1;
-			
+		for (int fi = 0; fi < _faces.length; ++fi) {
+			boolean isSide = (fi % 2) == 1;
 			Face.Metrics metrics = isSide ? SIDE_FACE_METRICS : FRONT_FACE_METRICS;
-			_faces[i] = new Face(metrics, t);
-			for (Strip strip : _faces[i].strips) {
+			_faces[fi] = new Face(metrics, t);
+			int si = 0;
+			for (Strip strip : _faces[fi].strips) {
 				_strips.add(strip);
 				for (Point point : strip.points) {
 					_points.add(point);
 				}
+				if (si % 2 == 1) {
+					_boxStrips.add(strip);
+				} else {
+					int pi = 0;
+					if (fi % 2 == 0) {
+						final Strip.Metrics firstThree = new Strip.Metrics(
+							EDGE_WIDTH / (NUM_FRONT_STRUTS+1),
+							25	
+						);
+						final Strip.Metrics lastOne = new Strip.Metrics(
+							EDGE_WIDTH / (NUM_FRONT_STRUTS+1),
+							24
+						);
+					
+						for (int fsi = 0; fsi <= NUM_FRONT_STRUTS; ++fsi) {
+							Strip.Metrics fsMetrics = (fsi < 3) ? firstThree : lastOne;
+							List<Point> vsp = new ArrayList<Point>();
+							for (int pj = 0; pj < fsMetrics.numPoints; ++pj) {
+								vsp.add(strip.points.get(pi++));
+							}
+							_boxStrips.add(new Strip(fsMetrics, vsp, true));
+						}
+					} else {
+						final Strip.Metrics ssMetrics = new Strip.Metrics(
+							EDGE_DEPTH / (NUM_SIDE_STRUTS+1),
+							24
+						);
+						for (int ssi = 0; ssi <= NUM_SIDE_STRUTS; ++ssi) {
+							List<Point> vsp = new ArrayList<Point>();
+							for (int pj = 0; pj < ssMetrics.numPoints; ++pj) {
+								vsp.add(strip.points.get(pi++));
+							}
+							_boxStrips.add(new Strip(ssMetrics, vsp, true));
+						}
+					}
+				}
+				++si;
 			}
 			
 			t.push();
@@ -72,10 +115,11 @@ public class BassBox {
 			t.rotateZ(Math.PI / 2.);
 			int numStruts = isSide ? NUM_SIDE_STRUTS : NUM_FRONT_STRUTS;
 			float strutSpacing = isSide ? SIDE_STRUT_SPACING : FRONT_STRUT_SPACING;
-			for (int si = 0; si < numStruts; ++si) {
+			for (int sti = 0; sti < numStruts; ++sti) {
 				t.translate(0, strutSpacing, 0);
 				Strip strut = new Strip(STRUT_METRICS, t, false);  
 				_strips.add(strut);
+				_boxStrips.add(strut);
 				for (Point point : strut.points) {
 					_points.add(point);
 				}
@@ -94,6 +138,7 @@ public class BassBox {
 		
 		faces = Collections.unmodifiableList(Arrays.asList(_faces));
 		strips = Collections.unmodifiableList(_strips);
+		boxStrips = Collections.unmodifiableList(_boxStrips);		
 		points = Collections.unmodifiableList(_points);
 	}
 

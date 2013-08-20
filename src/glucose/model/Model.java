@@ -17,7 +17,6 @@ public class Model {
 	public final List<Face> faces;
 	public final List<Strip> strips;
 	public final List<Point> points;
-	public final List<Strip> allBoxStrips;
 	
 	public final List<Speaker> speakers;
 	public final BassBox bassBox;
@@ -47,7 +46,6 @@ public class Model {
 		List<Face> faceList = new ArrayList<Face>();
 		List<Strip> stripList = new ArrayList<Strip>();
 		List<Point> pointList = new ArrayList<Point>();
-		List<Strip> allBoxStripList = new ArrayList<Strip>();
 		for (Cube cube : _cubes) {
 			if (cube != null) {
 				cubeList.add(cube);
@@ -55,7 +53,6 @@ public class Model {
 					faceList.add(face);
 					for (Strip strip : face.strips) {
 						stripList.add(strip);
-						allBoxStripList.add(strip);
 						for (Point point : strip.points) {
 							pointList.add(point);
 						}
@@ -64,16 +61,16 @@ public class Model {
 			}
 		}
 		
-		for (Strip strip : bassBox.strips) {
-			allBoxStripList.add(strip);
-		}
+		for (Strip strip : bassBox.boxStrips) {
+			stripList.add(strip);
+		}		
 		for (Point point : bassBox.points) {
 			pointList.add(point);
 		}
 		
 		for (Speaker speaker : speakers) {
 			for (Strip strip : speaker.strips) {
-				allBoxStripList.add(strip);
+				stripList.add(strip);
 			}
 			for (Point point : speaker.points) {
 				pointList.add(point);
@@ -84,7 +81,6 @@ public class Model {
 		this.cubes = Collections.unmodifiableList(cubeList);
 		this.faces = Collections.unmodifiableList(faceList);
 		this.strips = Collections.unmodifiableList(stripList);
-		this.allBoxStrips = Collections.unmodifiableList(allBoxStripList);
 		this.points = Collections.unmodifiableList(pointList);
 
 		float _xMax = 0, _yMax = 0, _zMax = 0;
