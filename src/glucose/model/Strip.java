@@ -55,7 +55,6 @@ public class Strip {
 		float offset = (metrics.length - (metrics.numPoints - 1) * POINT_SPACING) / 2.f;		
 		
 		float ax=0, ay=0, az=0;
-		int ai = 0;
 		transform.push();
 		transform.translate(offset, -Cube.CHANNEL_WIDTH/2.f, 0);
 		for (int i = 0; i < _points.length; i++) {
@@ -64,14 +63,13 @@ public class Strip {
 			ax += p.x;
 			ay += p.y;
 			az += p.z;
-			++ai;
 			transform.translate(POINT_SPACING, 0, 0);			
 		}
 		transform.pop();
 				
-		cx = ax / (float)ai;
-		cy = ay / (float)ai;
-		cz = az / (float)ai;
+		cx = ax / (float) metrics.numPoints;
+		cy = ay / (float) metrics.numPoints;
+		cz = az / (float) metrics.numPoints;
 		
 		points = Collections.unmodifiableList(Arrays.asList(_points));
 	}

@@ -41,7 +41,6 @@ public class Face {
 		transform.push();
 		transform.translate(0, metrics.vertical.length, 0);
 		float ax=0, ay=0, az=0;
-		int ai = 0;
 		for (int i = 0; i < this._strips.length; i++) {
 			boolean isHorizontal = (i % 2 == 0);
 			Strip.Metrics stripMetrics = isHorizontal ? metrics.horizontal : metrics.vertical;
@@ -53,14 +52,13 @@ public class Face {
 				ax += p.x;
 				ay += p.y;
 				az += p.z;
-				++ai;
 			}
 		}
 		transform.pop();
 		
-		cx = ax / (float) ai;
-		cy = ay / (float) ai;
-		cz = az / (float) ai;
+		cx = ax / (float) _points.size();
+		cy = ay / (float) _points.size();
+		cz = az / (float) _points.size();
 		
 		this.strips = Collections.unmodifiableList(Arrays.asList(this._strips));
 		this.points = Collections.unmodifiableList(_points);
