@@ -37,6 +37,9 @@ public class BassBox {
 
 	// Iterable list of all strips
 	public final List<Strip> strips;
+
+	// Iterable list of all struts
+	public final List<Strip> struts;
 	
 	// Iterable list of all virtual "box-size" strips
 	public final List<Strip> boxStrips;
@@ -55,6 +58,7 @@ public class BassBox {
 		Face[] _faces = new Face[4];
 		List<Strip> _boxStrips = new ArrayList<Strip>();
 		List<Strip> _strips = new ArrayList<Strip>();
+		List<Strip> _struts = new ArrayList<Strip>();
 		List<Point> _points = new ArrayList<Point>();
 
 		Transform t = new Transform();
@@ -117,20 +121,24 @@ public class BassBox {
 			float strutSpacing = isSide ? SIDE_STRUT_SPACING : FRONT_STRUT_SPACING;
 			for (int sti = 0; sti < numStruts; ++sti) {
 				t.translate(0, strutSpacing, 0);
-				Strip strut = new Strip(STRUT_METRICS, t, false);  
-				_strips.add(strut);
-				_boxStrips.add(strut);
-				for (Point point : strut.points) {
-					_points.add(point);
-				}
+				Strip strut = new Strip(STRUT_METRICS, t, false);
+				_struts.add(strut);
 			}
 			t.pop();
 			
 			t.translate(metrics.horizontal.length, 0, 0);
 			t.rotateY(Math.PI / 2.);
 		}
-		
 		t.pop();
+		
+		for (Strip strut : _struts) {
+			_strips.add(strut);
+			_boxStrips.add(strut);
+			for (Point point : strut.points) {
+				_points.add(point);
+			}
+		}
+		
 		
 		t.translate(EDGE_WIDTH/2., EDGE_HEIGHT/2., EDGE_DEPTH/2.);
 		cx = (float)t.x();
@@ -138,6 +146,7 @@ public class BassBox {
 		cz = (float)t.z();		
 		
 		faces = Collections.unmodifiableList(Arrays.asList(_faces));
+		struts = Collections.unmodifiableList(_struts);
 		strips = Collections.unmodifiableList(_strips);
 		boxStrips = Collections.unmodifiableList(_boxStrips);		
 		points = Collections.unmodifiableList(_points);
