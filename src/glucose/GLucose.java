@@ -159,6 +159,14 @@ public class GLucose {
 	}
 	
 	/**
+	 * 
+	 * @return The set of available crossfader transitions
+	 */
+	public LXTransition[] getTransitions() {
+		return this.transitions;
+	}
+	
+	/**
 	 * Specify the available set of transitions
 	 * 
 	 * @param transitions
@@ -233,10 +241,7 @@ public class GLucose {
 	 */
 	public void setSelectedTransition(int index) {
 		selectedTransitionIndex = index % transitions.length;
-		LXTransition transition = transitions[selectedTransitionIndex];
-		for (LXPattern p : lx.getPatterns()) {
-			p.setTransition(transition);
-		}
+		lx.engine.getDeck(1).setBlendTransition(getSelectedTransition());
 	}
 	
 	/**
