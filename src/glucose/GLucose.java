@@ -89,6 +89,22 @@ public class GLucose {
 	public final List<VirtualTransitionKnob> transitionKnobs;
 	public final List<VirtualEffectKnob> effectKnobs;
 	
+	private final List<EffectListener> effectListeners = new ArrayList<EffectListener>();
+	
+	public interface EffectListener {
+		public void effectSelected(LXEffect effect);
+	}
+	
+	public final GLucose addEffectListener(EffectListener listener) {
+		this.effectListeners.add(listener);
+		return this;
+	}
+	
+	public final GLucose removeEffectListener(EffectListener listener) {
+		this.effectListeners.remove(listener);
+		return this;
+	}
+	
 	/**
 	 * Creates a GLucose instance.
 	 * 
@@ -169,7 +185,7 @@ public class GLucose {
 	public void incrementSelectedEffectBy(int delta) {
 		selectedEffectIndex += delta;
 		if (selectedEffectIndex < 0) {
-			selectedEffectIndex  += lx.getEffects().size();
+			selectedEffectIndex += lx.getEffects().size();
 		}
 		setSelectedEffect(selectedEffectIndex);
 	}
@@ -181,6 +197,20 @@ public class GLucose {
 	 */
 	public void setSelectedEffect(int index) {
 		selectedEffectIndex = index % lx.getEffects().size();
+		LXEffect selectedEffect = getSelectedEffect();
+		for (EffectListener listener : this.effectListeners) {
+			listener.effectSelected(selectedEffect);
+		}
+	}
+	
+	public void setSelectedEffect(LXEffect effect) {
+		int i = 0;
+		for (LXEffect fx : lx.getEffects()) {
+			if (fx == effect) {
+				setSelectedEffect(i);
+			}
+			++i;
+		}
 	}
 	
 	/**
@@ -206,6 +236,20 @@ public class GLucose {
 		LXTransition transition = transitions[selectedTransitionIndex];
 		for (LXPattern p : lx.getPatterns()) {
 			p.setTransition(transition);
+		}
+	}
+	
+	/**
+	 * Sets the selected transition to the given transition
+	 * 
+	 * @param transition
+	 */
+	public void setSelectedTransition(LXTransition transition) {
+		for (int i = 0; i < transitions.length; ++i) {
+			if (transition == transitions[i]) {
+				setSelectedTransition(i);
+				break;
+			}
 		}
 	}
 		
