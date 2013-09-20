@@ -49,5 +49,9 @@ public abstract class SCPattern extends LXPattern {
 	protected void setColor(Point p, int c) {
 		colors[p.index] = c;
 	}
+	
+	public void noteOnReceived(rwmidi.Note note) {}
+	public void noteOffReceived(rwmidi.Note note) {}
+	public void controllerChangeReceived(rwmidi.Controller controller) {}
 
 }
