@@ -13,7 +13,6 @@
 
 package glucose;
 
-import glucose.control.SCMidiDevices;
 import glucose.control.VirtualEffectKnob;
 import glucose.control.VirtualPatternKnob;
 import glucose.control.VirtualTransitionKnob;

@@ -50,8 +50,37 @@ public abstract class SCPattern extends LXPattern {
 		colors[p.index] = c;
 	}
 	
-	public void noteOnReceived(rwmidi.Note note) {}
-	public void noteOffReceived(rwmidi.Note note) {}
-	public void controllerChangeReceived(rwmidi.Controller controller) {}
+	/**
+	 * Invoked by engine when this pattern is focused an a midi note is received.  
+	 * 
+	 * @param note
+	 * @return True if the pattern has consumed this note, false if the top-level
+	 *         may handle it
+	 */
+	public boolean noteOnReceived(rwmidi.Note note) {
+		return false;
+	}
+	
+	/**
+	 * Invoked by engine when this pattern is focused an a midi note off is received.  
+	 * 
+	 * @param note
+	 * @return True if the pattern has consumed this note, false if the top-level
+	 *         may handle it
+	 */
+	public boolean noteOffReceived(rwmidi.Note note) {
+		return false;
+	}
+	
+	/**
+	 * Invoked by engine when this pattern is focused an a controller is received  
+	 * 
+	 * @param note
+	 * @return True if the pattern has consumed this controller, false if the top-level
+	 *         may handle it
+	 */
+	public boolean controllerChangeReceived(rwmidi.Controller controller) {
+		return false;
+	}
 
 }
