@@ -24,6 +24,11 @@ public class BoothFloor {
 	// Iterable list of all points
 	public final List<Point> points;
 	
+	BoothFloor() {
+		strips = Collections.unmodifiableList(new ArrayList<Strip>());
+		points = Collections.unmodifiableList(new ArrayList<Point>());
+	}
+	
 	public BoothFloor(BassBox bassBox) {
 		List<Strip> _strips = new ArrayList<Strip>();
 		List<Point> _points = new ArrayList<Point>();		

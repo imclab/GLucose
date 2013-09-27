@@ -39,10 +39,10 @@ public class Model {
 	public Model(ArrayList<Tower> towerList, Cube[] cubeArr, BassBox bassBox, List<Speaker> speakers) {
 		
 		_cubes = cubeArr;
-		this.bassBox = bassBox;
 		this.speakers = Collections.unmodifiableList(speakers);
-		this.boothFloor = new BoothFloor(bassBox);
-
+		this.bassBox = bassBox;
+		this.boothFloor = bassBox.hasLights ? new BoothFloor(bassBox) : new BoothFloor(); 
+		
 		// Make unmodifiable accessors to the model data
 		List<Cube> cubeList = new ArrayList<Cube>();
 		List<Face> faceList = new ArrayList<Face>();
@@ -63,17 +63,21 @@ public class Model {
 			}
 		}
 		
-		for (Strip strip : bassBox.boxStrips) {
-			stripList.add(strip);
-		}		
-		for (Point point : bassBox.points) {
-			pointList.add(point);
+		if (bassBox != null) {
+			for (Strip strip : bassBox.boxStrips) {
+				stripList.add(strip);
+			}		
+			for (Point point : bassBox.points) {
+				pointList.add(point);
+			}
 		}
-		for (Strip strip : boothFloor.strips) {
-			stripList.add(strip);
-		}
-		for (Point point : boothFloor.points) {
-			pointList.add(point);
+		if (boothFloor != null) {
+			for (Strip strip : boothFloor.strips) {
+				stripList.add(strip);
+			}
+			for (Point point : boothFloor.points) {
+				pointList.add(point);
+			}
 		}
 		for (Speaker speaker : speakers) {
 			for (Strip strip : speaker.strips) {

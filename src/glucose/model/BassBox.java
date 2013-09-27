@@ -46,14 +46,58 @@ public class BassBox {
 	
 	// Iterable list of all points
 	public final List<Point> points;
+	
+	public final boolean hasLights;
+	
+	public final boolean exists;
 		
 	public final float x, y, z;
 	public final float cx, cy, cz;
+	
+	public static BassBox noBassBox() {
+		return new BassBox();
+	}
+	
+	public static BassBox unlitBassBox(float x, float y, float z) {
+		return new BassBox(x, y, z, true);
+	}
+	
+	private BassBox() {
+		x = y = z = cx = cy = cz = 0;
+		exists = false;
+		hasLights = false;
+		faces = Collections.unmodifiableList(new ArrayList<Face>());
+		strips = Collections.unmodifiableList(new ArrayList<Strip>());
+		struts = Collections.unmodifiableList(new ArrayList<Strip>());
+		boxStrips = Collections.unmodifiableList(new ArrayList<Strip>());
+		points = Collections.unmodifiableList(new ArrayList<Point>());
+	}
+	
+	private BassBox(float x, float y, float z, boolean noLights) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		cx = x + EDGE_WIDTH / 2.f;
+		cy = y + EDGE_HEIGHT / 2.f;
+		cz = z + EDGE_DEPTH / 2.f;
+		
+		exists = true;
+		hasLights = false;
+
+		faces = Collections.unmodifiableList(new ArrayList<Face>());
+		strips = Collections.unmodifiableList(new ArrayList<Strip>());
+		struts = Collections.unmodifiableList(new ArrayList<Strip>());
+		boxStrips = Collections.unmodifiableList(new ArrayList<Strip>());
+		points = Collections.unmodifiableList(new ArrayList<Point>());
+	}
 	
 	public BassBox(float x, float y, float z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+
+		exists = true;
+		hasLights = true;
 
 		Face[] _faces = new Face[4];
 		List<Strip> _boxStrips = new ArrayList<Strip>();
