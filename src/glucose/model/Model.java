@@ -34,6 +34,11 @@ public class Model {
 	public final float cy;
 	public final float cz;
 	
+	// Experimental, fast contigous memory accessors to point locations
+	public final float[] px;
+	public final float[] py;
+	public final float[] pz;
+	
 	private final Cube[] _cubes;
 		
 	public Model(ArrayList<Tower> towerList, Cube[] cubeArr, BassBox bassBox, List<Speaker> speakers) {
@@ -113,6 +118,16 @@ public class Model {
 		this.cx = (_xMin + _xMax) / 2.f;
 		this.cy = (_yMin + _yMax) / 2.f;
 		this.cz = (_zMin + _zMax) / 2.f;
+		
+		int numPoints = points.size();
+		this.px = new float[numPoints];
+		this.py = new float[numPoints];
+		this.pz = new float[numPoints];
+		for (Point p : points) {
+			this.px[p.index] = p.x;
+			this.py[p.index] = p.y;
+			this.pz[p.index] = p.z;
+		}
 	}
 	
 	/**
