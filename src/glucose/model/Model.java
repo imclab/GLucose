@@ -97,12 +97,12 @@ public class Model {
 		float _xMax = 0, _yMax = 0, _zMax = 0;
 		float _xMin = Float.MAX_VALUE, _yMin = Float.MAX_VALUE, _zMin = Float.MAX_VALUE;
 		for (Point p : points) {
-			_xMin = Math.min(_xMin, p.fx);
-			_yMin = Math.min(_yMin, p.fy);
-			_zMin = Math.min(_zMin, p.fz);
-			_xMax = Math.max(_xMax, p.fx);
-			_yMax = Math.max(_yMax, p.fy);
-			_zMax = Math.max(_zMax, p.fz);
+			_xMin = Math.min(_xMin, p.x);
+			_yMin = Math.min(_yMin, p.y);
+			_zMin = Math.min(_zMin, p.z);
+			_xMax = Math.max(_xMax, p.x);
+			_yMax = Math.max(_yMax, p.y);
+			_zMax = Math.max(_zMax, p.z);
 		}
 		this.xMin = _xMin;
 		this.yMin = _yMin;

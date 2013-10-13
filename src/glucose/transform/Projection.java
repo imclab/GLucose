@@ -27,9 +27,9 @@ public class Projection implements Iterable<Coord> {
 	public Projection reset(Model model) {
 		int i = 0;
 		for (Point p : model.points) {
-			coords[i].x = p.fx;
-			coords[i].y = p.fy;
-			coords[i].z = p.fz;
+			coords[i].x = p.x;
+			coords[i].y = p.y;
+			coords[i].z = p.z;
 			++i;
 		}
 		return this;

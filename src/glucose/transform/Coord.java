@@ -8,9 +8,9 @@ public class Coord {
 	public final int index;
 	
 	public Coord(Point p) {
-		x = p.fx;
-		y = p.fy;
-		z = p.fz;
+		x = p.x;
+		y = p.y;
+		z = p.z;
 		index = p.index;
 	}
 }
