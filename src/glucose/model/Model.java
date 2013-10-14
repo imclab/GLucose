@@ -39,6 +39,8 @@ public class Model {
 	public final float[] py;
 	public final float[] pz;
 	
+	public final float[] p;
+	
 	private final Cube[] _cubes;
 		
 	public Model(ArrayList<Tower> towerList, Cube[] cubeArr, BassBox bassBox, List<Speaker> speakers) {
@@ -123,13 +125,26 @@ public class Model {
 		this.px = new float[numPoints];
 		this.py = new float[numPoints];
 		this.pz = new float[numPoints];
+		this.p = new float[3*numPoints];
+		int pi = 0;
 		for (Point p : points) {
-			this.px[p.index] = p.x;
-			this.py[p.index] = p.y;
-			this.pz[p.index] = p.z;
+			this.px[p.index] = this.p[pi++] = p.x;
+			this.py[p.index] = this.p[pi++] = p.y;
+			this.pz[p.index] = this.p[pi++] = p.z;
 		}
 	}
 	
+	public final float x(int i) {
+		return this.p[3*i];
+	}
+	
+	public final float y(int i) {
+		return this.p[3*i+1];
+	}
+	
+	public final float z(int i) {
+		return this.p[3*i+2];
+	}
 	/**
 	 * TODO(mcslee): clean this up to internal-only
 	 * 
