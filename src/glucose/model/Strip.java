@@ -28,10 +28,12 @@ public class Strip {
 	public final boolean isHorizontal;
 	
 	public final float cx, cy, cz;
+	
+	public final float ry;
 		
 	public final List<Point> points;
 		
-	Strip(Metrics metrics, List<Point> points, boolean isHorizontal) {
+	Strip(Metrics metrics, float ry, List<Point> points, boolean isHorizontal) {
 		this.isHorizontal = isHorizontal;
 		this.metrics = metrics;
 		this.points = Collections.unmodifiableList(points);
@@ -45,9 +47,11 @@ public class Strip {
 		cx = ax / (float) metrics.numPoints;
 		cy = ay / (float) metrics.numPoints;
 		cz = az / (float) metrics.numPoints;
+		
+		this.ry = ry;
 	}
 	
-	Strip(Metrics metrics, Transform transform, boolean isHorizontal) {
+	Strip(Metrics metrics, float ry, Transform transform, boolean isHorizontal) {
 		this.metrics = metrics;
 		this.isHorizontal = isHorizontal;
 		Point[] _points = new Point[metrics.numPoints];
@@ -66,7 +70,9 @@ public class Strip {
 			transform.translate(POINT_SPACING, 0, 0);			
 		}
 		transform.pop();
-				
+		
+		this.ry = ry;
+		
 		cx = ax / (float) metrics.numPoints;
 		cy = ay / (float) metrics.numPoints;
 		cz = az / (float) metrics.numPoints;

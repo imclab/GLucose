@@ -41,7 +41,7 @@ public class BoothFloor {
 		for (float offset : STRIP_OFFSETS) {
 			t.push();
 			t.translate(0, offset, 0);
-			Strip s = new Strip(STRIP_METRICS, t, false);
+			Strip s = new Strip(STRIP_METRICS, 0, t, false);
 			_strips.add(s);
 			for (Point p : s.points) {
 				_points.add(p);

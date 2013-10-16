@@ -112,7 +112,8 @@ public class BassBox {
 		for (int fi = 0; fi < _faces.length; ++fi) {
 			boolean isSide = (fi % 2) == 1;
 			Face.Metrics metrics = isSide ? SIDE_FACE_METRICS : FRONT_FACE_METRICS;
-			_faces[fi] = new Face(metrics, t);
+			float ry = fi*90;
+			_faces[fi] = new Face(metrics, ry, t);
 			int si = 0;
 			for (Strip strip : _faces[fi].strips) {
 				_strips.add(strip);
@@ -139,7 +140,7 @@ public class BassBox {
 							for (int pj = 0; pj < fsMetrics.numPoints; ++pj) {
 								vsp.add(strip.points.get(pi++));
 							}
-							_boxStrips.add(new Strip(fsMetrics, vsp, true));
+							_boxStrips.add(new Strip(fsMetrics, ry, vsp, true));
 						}
 					} else {
 						final Strip.Metrics ssMetrics = new Strip.Metrics(
@@ -151,7 +152,7 @@ public class BassBox {
 							for (int pj = 0; pj < ssMetrics.numPoints; ++pj) {
 								vsp.add(strip.points.get(pi++));
 							}
-							_boxStrips.add(new Strip(ssMetrics, vsp, true));
+							_boxStrips.add(new Strip(ssMetrics, ry, vsp, true));
 						}
 					}
 				}
@@ -165,7 +166,7 @@ public class BassBox {
 			float strutSpacing = isSide ? SIDE_STRUT_SPACING : FRONT_STRUT_SPACING;
 			for (int sti = 0; sti < numStruts; ++sti) {
 				t.translate(0, strutSpacing, 0);
-				Strip strut = new Strip(STRUT_METRICS, t, false);
+				Strip strut = new Strip(STRUT_METRICS, ry, t, false);
 				_struts.add(strut);
 			}
 			t.pop();

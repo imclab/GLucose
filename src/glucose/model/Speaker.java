@@ -51,7 +51,7 @@ public class Speaker {
 			boolean isSide = (i % 2) == 1;
 			
 			Face.Metrics metrics = isSide ? SIDE_FACE_METRICS : FRONT_FACE_METRICS;
-			_faces[i] = new Face(metrics, t);
+			_faces[i] = new Face(metrics, ry + i*90, t);
 			for (Strip strip : _faces[i].strips) {
 				_strips.add(strip);
 				for (Point point : strip.points) {

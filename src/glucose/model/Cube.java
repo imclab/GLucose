@@ -65,6 +65,13 @@ public class Cube {
 	}
 	
 	public Cube(float x, float y, float z, float rx, float ry, float rz, Wiring wiring) {
+		while (rx < 0) rx += 360;
+		while (ry < 0) ry += 360;
+		while (rz < 0) rz += 360;
+		rx = rx % 360;
+		ry = ry % 360;
+		rz = rz % 360;
+		
 		this.wiring = wiring;
 		this.x = x; 
 		this.y = y;
@@ -84,7 +91,7 @@ public class Cube {
 		List<Strip> _strips = new ArrayList<Strip>();
 
 		for (int i = 0; i < _faces.length; i++) {
-			_faces[i] = new Face(FACE_METRICS, t);
+			_faces[i] = new Face(FACE_METRICS, (ry + 90*i) % 360, t);
 			for (Strip s : _faces[i].strips) {
 				_strips.add(s);
 			}

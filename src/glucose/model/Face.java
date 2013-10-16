@@ -35,7 +35,12 @@ public class Face {
 	// Center position of the face
 	public final float cx,cy,cz;
 	
-	Face(Metrics metrics, Transform transform) {
+	// Rotation of the face
+	public final float ry;
+	
+	Face(Metrics metrics, float ry, Transform transform) {
+		this.ry = ry;
+		
 		List<Point> _points = new ArrayList<Point>();
 		this._strips = new Strip[STRIPS_PER_FACE];
 		transform.push();
@@ -44,7 +49,7 @@ public class Face {
 		for (int i = 0; i < this._strips.length; i++) {
 			boolean isHorizontal = (i % 2 == 0);
 			Strip.Metrics stripMetrics = isHorizontal ? metrics.horizontal : metrics.vertical;
-			this._strips[i] = new Strip(stripMetrics, transform, isHorizontal);
+			this._strips[i] = new Strip(stripMetrics, ry, transform, isHorizontal);
 			transform.translate(isHorizontal ? metrics.horizontal.length : metrics.vertical.length, 0, 0);
 			transform.rotateZ(Math.PI/2.);
 			for (Point p : this._strips[i].points) {
