@@ -51,13 +51,35 @@ public abstract class SCPattern extends LXPattern {
 	}
 	
 	/**
+	 * Invoked by the engine when a grid controller button press occurs
+	 * 
+	 * @param row Row index on the gird
+	 * @param col Column index on the grid
+	 * @return True if the event was consumed, false otherwise
+	 */
+	public boolean gridPressed(int row, int col) {
+		return false;
+	}
+	
+	/**
+	 * Invoked by the engine when a grid controller button release occurs
+	 * 
+	 * @param row Row index on the gird
+	 * @param col Column index on the grid
+	 * @return True if the event was consumed, false otherwise
+	 */
+	public boolean gridReleased(int row, int col) {
+		return false;
+	}
+	
+	/**
 	 * Invoked by engine when this pattern is focused an a midi note is received.  
 	 * 
 	 * @param note
 	 * @return True if the pattern has consumed this note, false if the top-level
 	 *         may handle it
 	 */
-	public boolean noteOnReceived(rwmidi.Note note) {
+	public boolean noteOn(rwmidi.Note note) {
 		return false;
 	}
 	
@@ -68,7 +90,7 @@ public abstract class SCPattern extends LXPattern {
 	 * @return True if the pattern has consumed this note, false if the top-level
 	 *         may handle it
 	 */
-	public boolean noteOffReceived(rwmidi.Note note) {
+	public boolean noteOff(rwmidi.Note note) {
 		return false;
 	}
 	
@@ -79,7 +101,7 @@ public abstract class SCPattern extends LXPattern {
 	 * @return True if the pattern has consumed this controller, false if the top-level
 	 *         may handle it
 	 */
-	public boolean controllerChangeReceived(rwmidi.Controller controller) {
+	public boolean controllerChange(rwmidi.Controller controller) {
 		return false;
 	}
 
