@@ -30,9 +30,11 @@ public class Strip {
 	public final float cx, cy, cz;
 	
 	public final float ry;
-		
+	
 	public final List<Point> points;
-		
+
+	public Object obj1 = null, obj2 = null;
+	
 	Strip(Metrics metrics, float ry, List<Point> points, boolean isHorizontal) {
 		this.isHorizontal = isHorizontal;
 		this.metrics = metrics;
