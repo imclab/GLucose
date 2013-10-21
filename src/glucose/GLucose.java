@@ -83,6 +83,9 @@ public class GLucose {
 	public static final int NUM_PATTERN_KNOBS = 8;
 	public static final int NUM_TRANSITION_KNOBS = 4;
 	public static final int NUM_EFFECT_KNOBS = 4;
+	
+	public static final int LEFT_DECK = 0;
+	public static final int RIGHT_DECK = 1;
 
 	public final List<VirtualPatternKnob> patternKnobs;
 	public final List<VirtualTransitionKnob> transitionKnobs;
@@ -240,7 +243,7 @@ public class GLucose {
 	 */
 	public void setSelectedTransition(int index) {
 		selectedTransitionIndex = index % transitions.length;
-		lx.engine.getDeck(1).setBlendTransition(getSelectedTransition());
+		lx.engine.getDeck(RIGHT_DECK).setFaderTransition(getSelectedTransition());
 	}
 	
 	/**
