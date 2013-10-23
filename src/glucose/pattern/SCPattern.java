@@ -7,6 +7,7 @@ import glucose.model.Model;
 import glucose.model.Point;
 import glucose.model.Strip;
 
+import heronarts.lx.control.LXParameter;
 import heronarts.lx.pattern.LXPattern;
 
 import java.util.ArrayList;
@@ -49,6 +50,21 @@ public abstract class SCPattern extends LXPattern {
 	protected void setColor(Point p, int c) {
 		colors[p.index] = c;
 	}
+	
+	/**
+	 * Reset this pattern to its default state.
+	 */
+	public final void reset() {
+		for (LXParameter parameter : getParameters()) {
+			parameter.reset();
+		}
+		onReset();
+	}
+	
+	/**
+	 * Subclasses may override to add additional reset functionality.
+	 */
+	protected /*abstract*/ void onReset() {}
 	
 	/**
 	 * Invoked by the engine when a grid controller button press occurs
