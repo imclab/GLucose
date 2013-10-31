@@ -120,7 +120,7 @@ public class GLucose {
 						
 		// Build an LX instance for pattern and pixel state
 		this.lx = new HeronLX(applet, this.model.points.size(), 1);
-		this.lx.enableSimulation(false);
+		this.lx.setSimulationEnabled(false);
 
 		List<VirtualPatternKnob> _patternKnobs = new ArrayList<VirtualPatternKnob>(NUM_PATTERN_KNOBS);
 		for (int i = 0; i < NUM_PATTERN_KNOBS; ++i) {
