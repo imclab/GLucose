@@ -22,7 +22,7 @@ import glucose.model.Model;
 
 import glucose.pattern.SCPattern;
 
-import heronarts.lx.HeronLX;
+import heronarts.lx.LX;
 import heronarts.lx.effect.LXEffect;
 import heronarts.lx.pattern.LXPattern;
 import heronarts.lx.transition.LXTransition;
@@ -56,9 +56,9 @@ public class GLucose {
 	public final PApplet applet;
 	
 	/**
-	 * The HeronLX engine running patterns and effects
+	 * The LX engine running patterns and effects
 	 */
-	public final HeronLX lx;
+	public final LX lx;
 	
 	/**
 	 * The model of the entire car
@@ -119,7 +119,7 @@ public class GLucose {
 		this.model = model;
 						
 		// Build an LX instance for pattern and pixel state
-		this.lx = new HeronLX(applet, this.model.points.size(), 1);
+		this.lx = new LX(applet, this.model.points.size(), 1);
 		this.lx.setSimulationEnabled(false);
 
 		List<VirtualPatternKnob> _patternKnobs = new ArrayList<VirtualPatternKnob>(NUM_PATTERN_KNOBS);
