@@ -5,8 +5,8 @@ import glucose.model.Face;
 import glucose.model.Model;
 import glucose.model.Strip;
 
-import heronarts.lx.control.LXParameter;
 import heronarts.lx.model.LXPoint;
+import heronarts.lx.parameter.LXParameter;
 import heronarts.lx.pattern.LXPattern;
 
 import java.util.ArrayList;
