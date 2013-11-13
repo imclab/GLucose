@@ -1,6 +1,5 @@
-package glucose.transition;
+package glucose;
 
-import glucose.GLucose;
 import glucose.model.Model;
 
 import heronarts.lx.transition.LXTransition;

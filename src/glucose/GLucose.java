@@ -13,14 +13,8 @@
 
 package glucose;
 
-import glucose.control.VirtualEffectKnob;
-import glucose.control.VirtualPatternKnob;
-import glucose.control.VirtualTransitionKnob;
-
 import glucose.model.Cube;
 import glucose.model.Model;
-
-import glucose.pattern.SCPattern;
 
 import heronarts.lx.LX;
 import heronarts.lx.effect.LXEffect;
@@ -80,16 +74,8 @@ public class GLucose {
 	 */
 	private int selectedTransitionIndex = 0;
 	
-	public static final int NUM_PATTERN_KNOBS = 8;
-	public static final int NUM_TRANSITION_KNOBS = 4;
-	public static final int NUM_EFFECT_KNOBS = 4;
-	
 	public static final int LEFT_DECK = 0;
 	public static final int RIGHT_DECK = 1;
-
-	public final List<VirtualPatternKnob> patternKnobs;
-	public final List<VirtualTransitionKnob> transitionKnobs;
-	public final List<VirtualEffectKnob> effectKnobs;
 	
 	private final List<EffectListener> effectListeners = new ArrayList<EffectListener>();
 	
@@ -121,24 +107,6 @@ public class GLucose {
 		// Build an LX instance for pattern and pixel state
 		this.lx = new LX(applet, this.model);
 		this.lx.setSimulationEnabled(false);
-
-		List<VirtualPatternKnob> _patternKnobs = new ArrayList<VirtualPatternKnob>(NUM_PATTERN_KNOBS);
-		for (int i = 0; i < NUM_PATTERN_KNOBS; ++i) {
-			_patternKnobs.add(new VirtualPatternKnob(this, i));
-		}
-		patternKnobs = Collections.unmodifiableList(_patternKnobs);
-
-		List<VirtualTransitionKnob> _transitionKnobs = new ArrayList<VirtualTransitionKnob>(NUM_PATTERN_KNOBS);
-		for (int i = 0; i < NUM_TRANSITION_KNOBS; ++i) {
-			_transitionKnobs.add(new VirtualTransitionKnob(this, i));
-		}
-		transitionKnobs = Collections.unmodifiableList(_transitionKnobs);
-		
-		List<VirtualEffectKnob> _effectKnobs = new ArrayList<VirtualEffectKnob>(NUM_PATTERN_KNOBS);
-		for (int i = 0; i < NUM_EFFECT_KNOBS; ++i) {
-			_effectKnobs.add(new VirtualEffectKnob(this, i));
-		}
-		effectKnobs = Collections.unmodifiableList(_effectKnobs);
 
 	}
 	

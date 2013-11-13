@@ -1,6 +1,5 @@
-package glucose.effect;
+package glucose;
 
-import glucose.GLucose;
 import glucose.model.Model;
 
 import heronarts.lx.effect.LXEffect;

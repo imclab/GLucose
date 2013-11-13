@@ -1,6 +1,5 @@
-package glucose.pattern;
+package glucose;
 
-import glucose.GLucose;
 import glucose.model.Cube;
 import glucose.model.Face;
 import glucose.model.Model;
