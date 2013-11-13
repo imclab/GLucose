@@ -3,6 +3,7 @@ package glucose.model;
 import heronarts.lx.model.LXFixture;
 import heronarts.lx.model.LXModel;
 import heronarts.lx.model.LXPoint;
+import heronarts.lx.transform.LXTransform;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -130,7 +131,7 @@ public class Cube extends LXModel {
 		private final List<LXPoint> points = new ArrayList<LXPoint>();
 		
 		private Fixture(float x, float y, float z, float rx, float ry, float rz) {
-			Transform t = new Transform();
+			LXTransform t = new LXTransform();
 			t.translate(x, y, z);
 			t.rotateX(rx*Math.PI / 180.);
 			t.rotateY(ry*Math.PI / 180.);

@@ -3,6 +3,7 @@ package glucose.model;
 import heronarts.lx.model.LXFixture;
 import heronarts.lx.model.LXModel;
 import heronarts.lx.model.LXPoint;
+import heronarts.lx.transform.LXTransform;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -77,7 +78,7 @@ public class Speaker extends LXModel {
 		private final static int NUM_FACES = 4;
 		
 		private Fixture(float x, float y, float z, float ry) {
-			Transform t = new Transform();
+			LXTransform t = new LXTransform();
 			t.translate(x, y, z);
 			t.rotateY(ry*Math.PI / 180.);
 			

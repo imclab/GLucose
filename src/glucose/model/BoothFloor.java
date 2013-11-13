@@ -3,6 +3,7 @@ package glucose.model;
 import heronarts.lx.model.LXFixture;
 import heronarts.lx.model.LXModel;
 import heronarts.lx.model.LXPoint;
+import heronarts.lx.transform.LXTransform;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,7 +50,7 @@ public class BoothFloor extends LXModel {
 		private final List<LXPoint> points = new ArrayList<LXPoint>();
 		
 		private Fixture(BassBox bassBox) {
-			Transform t = new Transform();
+			LXTransform t = new LXTransform();
 			t.translate(bassBox.x, bassBox.y + bassBox.EDGE_HEIGHT, bassBox.z + BassBox.EDGE_DEPTH);
 			t.rotateY(-Math.PI/2.);
 			t.rotateX(-Math.PI/2.);

@@ -3,6 +3,7 @@ package glucose.model;
 import heronarts.lx.model.LXFixture;
 import heronarts.lx.model.LXModel;
 import heronarts.lx.model.LXPoint;
+import heronarts.lx.transform.LXTransform;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +38,7 @@ public class Face extends LXModel {
 	 */
 	public final float ry;
 	
-	Face(Metrics metrics, float ry, Transform transform) {
+	Face(Metrics metrics, float ry, LXTransform transform) {
 		super(new Fixture(metrics, ry, transform));
 		Fixture fixture = (Fixture) this.fixtures.get(0);
 		this.ry = ry;
@@ -49,7 +50,7 @@ public class Face extends LXModel {
 		private final List<Strip> strips = new ArrayList<Strip>();
 		private final List<LXPoint> points = new ArrayList<LXPoint>();
 		
-		private Fixture(Metrics metrics, float ry, Transform transform) {
+		private Fixture(Metrics metrics, float ry, LXTransform transform) {
 			transform.push();
 			transform.translate(0, metrics.vertical.length, 0);
 			for (int i = 0; i < STRIPS_PER_FACE; i++) {

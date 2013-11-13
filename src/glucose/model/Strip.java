@@ -3,6 +3,7 @@ package glucose.model;
 import heronarts.lx.model.LXFixture;
 import heronarts.lx.model.LXModel;
 import heronarts.lx.model.LXPoint;
+import heronarts.lx.transform.LXTransform;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +49,7 @@ public class Strip extends LXModel {
 		this.ry = ry;
 	}
 	
-	Strip(Metrics metrics, float ry, Transform transform, boolean isHorizontal) {
+	Strip(Metrics metrics, float ry, LXTransform transform, boolean isHorizontal) {
 		super(new Fixture(metrics, ry, transform));
 		this.metrics = metrics;
 		this.isHorizontal = isHorizontal;
@@ -58,7 +59,7 @@ public class Strip extends LXModel {
 	private static class Fixture implements LXFixture {
 		private final List<LXPoint> points = new ArrayList<LXPoint>();
 		
-		private Fixture(Metrics metrics, float ry, Transform transform) {
+		private Fixture(Metrics metrics, float ry, LXTransform transform) {
 			float offset = (metrics.length - (metrics.numPoints - 1) * POINT_SPACING) / 2.f;
 			transform.push();
 			transform.translate(offset, -Cube.CHANNEL_WIDTH/2.f, 0);

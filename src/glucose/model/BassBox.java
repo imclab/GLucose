@@ -1,10 +1,9 @@
 package glucose.model;
 
-import glucose.model.Strip.Metrics;
-
 import heronarts.lx.model.LXFixture;
 import heronarts.lx.model.LXModel;
 import heronarts.lx.model.LXPoint;
+import heronarts.lx.transform.LXTransform;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -168,7 +167,7 @@ public class BassBox extends LXModel {
 		
 		private Fixture(float x, float y, float z) {
 			
-			Transform t = new Transform();
+			LXTransform t = new LXTransform();
 			t.translate(x, y, z);		
 			
 			t.push();
