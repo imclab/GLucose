@@ -1,5 +1,9 @@
 package glucose.model;
 
+import heronarts.lx.model.LXFixture;
+import heronarts.lx.model.LXModel;
+import heronarts.lx.model.LXPoint;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,7 +12,7 @@ import java.util.List;
 /**
  * A strip is a linear run of points along a single edge of one cube.
  */
-public class Strip {
+public class Strip extends LXModel {
 	
 	public static final float POINT_SPACING = 18.625f / 15.f;
 	
@@ -25,61 +29,51 @@ public class Strip {
 	
 	public final Metrics metrics;
 	
+	/**
+	 * Whether this is a horizontal strip
+	 */
 	public final boolean isHorizontal;
 	
-	public final float cx, cy, cz;
-	
+	/**
+	 * Rotation about the y axis
+	 */
 	public final float ry;
-	
-	public final List<Point> points;
 
 	public Object obj1 = null, obj2 = null;
 	
-	Strip(Metrics metrics, float ry, List<Point> points, boolean isHorizontal) {
+	Strip(Metrics metrics, float ry, List<LXPoint> points, boolean isHorizontal) {
+		super(points);
 		this.isHorizontal = isHorizontal;
-		this.metrics = metrics;
-		this.points = Collections.unmodifiableList(points);
-		
-		float ax=0, ay=0, az=0;
-		for (Point p : points) {
-			ax += p.x;
-			ay += p.y;
-			az += p.z;
-		}
-		cx = ax / (float) metrics.numPoints;
-		cy = ay / (float) metrics.numPoints;
-		cz = az / (float) metrics.numPoints;
-		
+		this.metrics = metrics;		
 		this.ry = ry;
 	}
 	
 	Strip(Metrics metrics, float ry, Transform transform, boolean isHorizontal) {
+		super(new Fixture(metrics, ry, transform));
 		this.metrics = metrics;
 		this.isHorizontal = isHorizontal;
-		Point[] _points = new Point[metrics.numPoints];
-		
-		float offset = (metrics.length - (metrics.numPoints - 1) * POINT_SPACING) / 2.f;		
-		
-		float ax=0, ay=0, az=0;
-		transform.push();
-		transform.translate(offset, -Cube.CHANNEL_WIDTH/2.f, 0);
-		for (int i = 0; i < _points.length; i++) {
-			Point p = new Point(this, transform);
-			_points[i] = p;
-			ax += p.x;
-			ay += p.y;
-			az += p.z;
-			transform.translate(POINT_SPACING, 0, 0);			
-		}
-		transform.pop();
-		
 		this.ry = ry;
+	}
+	
+	private static class Fixture implements LXFixture {
+		private final List<LXPoint> points = new ArrayList<LXPoint>();
 		
-		cx = ax / (float) metrics.numPoints;
-		cy = ay / (float) metrics.numPoints;
-		cz = az / (float) metrics.numPoints;
+		private Fixture(Metrics metrics, float ry, Transform transform) {
+			float offset = (metrics.length - (metrics.numPoints - 1) * POINT_SPACING) / 2.f;
+			transform.push();
+			transform.translate(offset, -Cube.CHANNEL_WIDTH/2.f, 0);
+			for (int i = 0; i < metrics.numPoints; i++) {
+				LXPoint point = new LXPoint(transform.x(), transform.y(), transform.z());
+				this.points.add(point);
+				transform.translate(POINT_SPACING, 0, 0);			
+			}
+			transform.pop();
+		}
 		
-		points = Collections.unmodifiableList(Arrays.asList(_points));
+		public List<LXPoint> getPoints() {
+			return this.points;
+		}
+		
 	}
 	
 }

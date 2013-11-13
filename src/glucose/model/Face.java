@@ -1,5 +1,9 @@
 package glucose.model;
 
+import heronarts.lx.model.LXFixture;
+import heronarts.lx.model.LXModel;
+import heronarts.lx.model.LXPoint;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,7 +13,7 @@ import java.util.List;
  * A face is a component of a cube. It is comprised of four strips forming
  * the lights on this side of a cube. A whole cube is formed by four faces.
  */
-public class Face {
+public class Face extends LXModel {
 
 	public final static int STRIPS_PER_FACE = 4;
 	
@@ -23,50 +27,48 @@ public class Face {
 		}
 	}
 	
-	// All points in this clip
-	public final List<Point> points; 
-	
-	// All strips in this clip
+	/**
+	 * Immutable list of strips
+	 */
 	public final List<Strip> strips;
 		
-	// Strips in this clip, each comprised of three
-	private final Strip[] _strips;
-	
-	// Center position of the face
-	public final float cx,cy,cz;
-	
-	// Rotation of the face
+	/**
+	 * Rotation of the face about the y-axis
+	 */
 	public final float ry;
 	
 	Face(Metrics metrics, float ry, Transform transform) {
+		super(new Fixture(metrics, ry, transform));
+		Fixture fixture = (Fixture) this.fixtures.get(0);
 		this.ry = ry;
-		
-		List<Point> _points = new ArrayList<Point>();
-		this._strips = new Strip[STRIPS_PER_FACE];
-		transform.push();
-		transform.translate(0, metrics.vertical.length, 0);
-		float ax=0, ay=0, az=0;
-		for (int i = 0; i < this._strips.length; i++) {
-			boolean isHorizontal = (i % 2 == 0);
-			Strip.Metrics stripMetrics = isHorizontal ? metrics.horizontal : metrics.vertical;
-			this._strips[i] = new Strip(stripMetrics, ry, transform, isHorizontal);
-			transform.translate(isHorizontal ? metrics.horizontal.length : metrics.vertical.length, 0, 0);
-			transform.rotateZ(Math.PI/2.);
-			for (Point p : this._strips[i].points) {
-				_points.add(p);
-				ax += p.x;
-				ay += p.y;
-				az += p.z;
-			}
-		}
-		transform.pop();
-		
-		cx = ax / (float) _points.size();
-		cy = ay / (float) _points.size();
-		cz = az / (float) _points.size();
-		
-		this.strips = Collections.unmodifiableList(Arrays.asList(this._strips));
-		this.points = Collections.unmodifiableList(_points);
+		this.strips = Collections.unmodifiableList(fixture.strips);
 	}
 	
+	private static class Fixture implements LXFixture {
+		
+		private final List<Strip> strips = new ArrayList<Strip>();
+		private final List<LXPoint> points = new ArrayList<LXPoint>();
+		
+		private Fixture(Metrics metrics, float ry, Transform transform) {
+			transform.push();
+			transform.translate(0, metrics.vertical.length, 0);
+			for (int i = 0; i < STRIPS_PER_FACE; i++) {
+				boolean isHorizontal = (i % 2 == 0);
+				Strip.Metrics stripMetrics = isHorizontal ? metrics.horizontal : metrics.vertical;
+				Strip strip = new Strip(stripMetrics, ry, transform, isHorizontal);
+				this.strips.add(strip);
+				transform.translate(isHorizontal ? metrics.horizontal.length : metrics.vertical.length, 0, 0);
+				transform.rotateZ(Math.PI/2.);
+				for (LXPoint p : strip.points) {
+					this.points.add(p);
+				}
+			}
+			transform.pop();
+		}
+		
+		public List<LXPoint> getPoints() {
+			return this.points;
+		}
+
+	}		
 }

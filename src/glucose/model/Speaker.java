@@ -1,11 +1,18 @@
 package glucose.model;
 
+import heronarts.lx.model.LXFixture;
+import heronarts.lx.model.LXModel;
+import heronarts.lx.model.LXPoint;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Speaker {
+/**
+ * Model of a speaker enclosure with lights around the outsides
+ */
+public class Speaker extends LXModel {
 	public static final float EDGE_WIDTH = 54.375f;
 	public static final float EDGE_HEIGHT = 45.25f;
 	public static final float EDGE_DEPTH = 33.75f;
@@ -20,58 +27,84 @@ public class Speaker {
 		new Strip.Metrics(EDGE_HEIGHT, 31)
 	);
 	
-	// Iterable list of all faces
+	/**
+	 * Immutable list of faces
+	 */
 	public final List<Face> faces;
 
-	// Iterable list of all strips
+	/**
+	 * Immutable list of strips
+	 */
 	public final List<Strip> strips;
 	
-	// Iterable list of all points
-	public final List<Point> points;
-		
-	public final float x, y, z, ry;
-	public final float cx, cy, cz;
+	/**
+	 * Front-left corner x coordinate
+	 */
+	public final float x;
+	
+	/**
+	 * Front-left corner y coordinate
+	 */
+	public final float y;
+	
+	/**
+	 * Front-left corner z coordinate
+	 */
+	public final float z;
+	
+	/**
+	 * Rotation about the y axis
+	 */
+	public final float ry;
 	
 	public Speaker(float x, float y, float z, float ry) {
+		super(new Fixture(x, y, z, ry));
+		Fixture fixture = (Fixture) this.fixtures.get(0);
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.ry = ry;
-
-		Face[] _faces = new Face[4];
-		List<Strip> _strips = new ArrayList<Strip>();
-		List<Point> _points = new ArrayList<Point>();
-
-		Transform t = new Transform();
-		t.translate(x, y, z);
-		t.rotateY(ry*Math.PI / 180.);
 		
-		t.push();
-		for (int i = 0; i < _faces.length; ++i) {
-			boolean isSide = (i % 2) == 1;
+		this.faces = Collections.unmodifiableList(fixture.faces);
+		this.strips = Collections.unmodifiableList(fixture.strips);
+	}
+	
+	private static class Fixture implements LXFixture {
+		private final List<Face> faces = new ArrayList<Face>();
+		private final List<Strip> strips = new ArrayList<Strip>();
+		private final List<LXPoint> points = new ArrayList<LXPoint>();
+		
+		private final static int NUM_FACES = 4;
+		
+		private Fixture(float x, float y, float z, float ry) {
+			Transform t = new Transform();
+			t.translate(x, y, z);
+			t.rotateY(ry*Math.PI / 180.);
 			
-			Face.Metrics metrics = isSide ? SIDE_FACE_METRICS : FRONT_FACE_METRICS;
-			_faces[i] = new Face(metrics, ry + i*90, t);
-			for (Strip strip : _faces[i].strips) {
-				_strips.add(strip);
-				for (Point point : strip.points) {
-					_points.add(point);
+			t.push();
+			for (int i = 0; i < NUM_FACES; ++i) {
+				boolean isSide = (i % 2) == 1;
+				
+				Face.Metrics metrics = isSide ? SIDE_FACE_METRICS : FRONT_FACE_METRICS;
+				Face face = new Face(metrics, ry + i*90, t);
+				this.faces.add(face);
+				for (Strip strip : face.strips) {
+					this.strips.add(strip);
+					for (LXPoint point : strip.points) {
+						this.points.add(point);
+					}
 				}
+							
+				t.translate(metrics.horizontal.length, 0, 0);
+				t.rotateY(Math.PI / 2.);
 			}
-						
-			t.translate(metrics.horizontal.length, 0, 0);
-			t.rotateY(Math.PI / 2.);
+			t.pop();
+
 		}
-		t.pop();
 		
-		t.translate(EDGE_WIDTH/2., EDGE_HEIGHT/2., EDGE_DEPTH/2.);
-		cx = (float)t.x();
-		cy = (float)t.y();
-		cz = (float)t.z();		
-		
-		faces = Collections.unmodifiableList(Arrays.asList(_faces));
-		strips = Collections.unmodifiableList(_strips);
-		points = Collections.unmodifiableList(_points);
+		public List<LXPoint> getPoints() {
+			return this.points;
+		}
 	}
 
 }

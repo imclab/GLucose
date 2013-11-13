@@ -119,7 +119,7 @@ public class GLucose {
 		this.model = model;
 						
 		// Build an LX instance for pattern and pixel state
-		this.lx = new LX(applet, this.model.points.size(), 1);
+		this.lx = new LX(applet, this.model);
 		this.lx.setSimulationEnabled(false);
 
 		List<VirtualPatternKnob> _patternKnobs = new ArrayList<VirtualPatternKnob>(NUM_PATTERN_KNOBS);
