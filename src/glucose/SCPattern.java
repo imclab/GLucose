@@ -1,11 +1,5 @@
 package glucose;
 
-import glucose.model.Cube;
-import glucose.model.Face;
-import glucose.model.Model;
-import glucose.model.Strip;
-
-import heronarts.lx.model.LXPoint;
 import heronarts.lx.parameter.LXParameter;
 import heronarts.lx.pattern.LXPattern;
 
@@ -20,34 +14,10 @@ import java.util.List;
 public abstract class SCPattern extends LXPattern {
 	
 	protected final GLucose glucose;
-	protected final Model model;
 	
 	protected SCPattern(GLucose glucose) {
 		super(glucose.lx);
 		this.glucose = glucose;
-		this.model = glucose.model;
-	}
-	
-	protected void setColor(Cube cube, int c) {
-		for (LXPoint p : cube.points) {
-			colors[p.index] = c;
-		}
-	}	
-	
-	protected void setColor(Face face, int c) {
-		for (LXPoint p : face.points) {
-			colors[p.index] = c;
-		}
-	}
-	
-	protected void setColor(Strip strip, int c) {
-		for (LXPoint p : strip.points) {
-			colors[p.index] = c;
-		}
-	}
-	
-	protected void setColor(LXPoint p, int c) {
-		colors[p.index] = c;
 	}
 	
 	/**

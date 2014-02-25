@@ -13,11 +13,9 @@
 
 package glucose;
 
-import glucose.model.Cube;
-import glucose.model.Model;
-
 import heronarts.lx.LX;
 import heronarts.lx.effect.LXEffect;
+import heronarts.lx.model.LXModel;
 import heronarts.lx.pattern.LXPattern;
 import heronarts.lx.transition.LXTransition;
 
@@ -53,12 +51,7 @@ public class GLucose {
 	 * The LX engine running patterns and effects
 	 */
 	public final LX lx;
-	
-	/**
-	 * The model of the entire car
-	 */
-	public final Model model;
-		
+			
 	/**
 	 * Currently selected effect.
 	 */
@@ -98,14 +91,11 @@ public class GLucose {
 	 * 
 	 * @param applet
 	 */
-	public GLucose(PApplet applet, Model model) {	
+	public GLucose(PApplet applet, LXModel model) {	
 		this.applet = applet;
-		
-		// The model of the cubes
-		this.model = model;
-						
+								
 		// Build an LX instance for pattern and pixel state
-		this.lx = new LX(applet, this.model);
+		this.lx = new LX(applet, model);
 		this.lx.setSimulationEnabled(false);
 
 	}
