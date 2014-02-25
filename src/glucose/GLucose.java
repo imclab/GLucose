@@ -108,15 +108,6 @@ public class GLucose {
 	public int[] getColors() {
 		return lx.getColors();
 	}
-		
-	/**
-	 * The current pattern
-	 * 
-	 * @return The currently running pattern
-	 */
-	public SCPattern getPattern() {
-		return (SCPattern)lx.getPattern();
-	}
 	
 	/**
 	 * 
