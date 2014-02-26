@@ -56,17 +56,7 @@ public class GLucose {
 	 * Currently selected effect.
 	 */
 	private int selectedEffectIndex = 0;
-	
-	/**
-	 * Set of available transitions
-	 */
-	private LXTransition[] transitions;
-	
-	/**
-	 * Currently selected transition
-	 */
-	private int selectedTransitionIndex = 0;
-	
+		
 	public static final int LEFT_DECK = 0;
 	public static final int RIGHT_DECK = 1;
 	
@@ -109,24 +99,6 @@ public class GLucose {
 		return lx.getColors();
 	}
 	
-	/**
-	 * 
-	 * @return The set of available crossfader transitions
-	 */
-	public LXTransition[] getTransitions() {
-		return this.transitions;
-	}
-	
-	/**
-	 * Specify the available set of transitions
-	 * 
-	 * @param transitions
-	 */
-	public void setTransitions(LXTransition[] transitions) {
-		this.transitions = transitions;
-		setSelectedTransition(0);
-	}
-		
 	/**
 	 * The selected effect
 	 * 
@@ -171,53 +143,7 @@ public class GLucose {
 			++i;
 		}
 	}
-	
-	/**
-	 * Set the selected transition relative to current value
-	 * 
-	 * @param delta
-	 */
-	public void incrementSelectedTransitionBy(int delta) {
-		selectedTransitionIndex += delta;
-		if (selectedTransitionIndex < 0) {
-			selectedTransitionIndex += transitions.length;
-		}
-		setSelectedTransition(selectedTransitionIndex);
-	}
-	
-	/**
-	 * Sets the selected transition
-	 * 
-	 * @param index
-	 */
-	public void setSelectedTransition(int index) {
-		selectedTransitionIndex = index % transitions.length;
-		lx.engine.getDeck(RIGHT_DECK).setFaderTransition(getSelectedTransition());
-	}
-	
-	/**
-	 * Sets the selected transition to the given transition
-	 * 
-	 * @param transition
-	 */
-	public void setSelectedTransition(LXTransition transition) {
-		for (int i = 0; i < transitions.length; ++i) {
-			if (transition == transitions[i]) {
-				setSelectedTransition(i);
-				break;
-			}
-		}
-	}
-		
-	/**
-	 * The selected transition
-	 * 
-	 * @return The currently selected transition
-	 */
-	public LXTransition getSelectedTransition() {
-		return this.transitions[this.selectedTransitionIndex];
-	}
-	
+
 	/**
 	 * Invoked when the sketch shuts down. Close any engine components
 	 * that should not keep running.
