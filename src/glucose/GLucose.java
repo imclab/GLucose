@@ -52,31 +52,7 @@ public class GLucose {
 	 */
 	public final LX lx;
 			
-	/**
-	 * Currently selected effect.
-	 */
-	private int selectedEffectIndex = 0;
-		
-	public static final int LEFT_DECK = 0;
-	public static final int RIGHT_DECK = 1;
-	
-	private final List<EffectListener> effectListeners = new ArrayList<EffectListener>();
-	
-	public interface EffectListener {
-		public void effectSelected(LXEffect effect);
-	}
-	
-	public final GLucose addEffectListener(EffectListener listener) {
-		this.effectListeners.add(listener);
-		return this;
-	}
-	
-	public final GLucose removeEffectListener(EffectListener listener) {
-		this.effectListeners.remove(listener);
-		return this;
-	}
-	
-	/**
+		/**
 	 * Creates a GLucose instance.
 	 * 
 	 * @param applet
@@ -98,52 +74,6 @@ public class GLucose {
 	public int[] getColors() {
 		return lx.getColors();
 	}
-	
-	/**
-	 * The selected effect
-	 * 
-	 * @return The currently selected effect
-	 */
-	public LXEffect getSelectedEffect() {
-		return lx.getEffects().get(this.selectedEffectIndex);
-	}
-	
-	/**
-	 * Increments the selected effect by an offset
-	 * 
-	 * @param delta
-	 */
-	public void incrementSelectedEffectBy(int delta) {
-		selectedEffectIndex += delta;
-		if (selectedEffectIndex < 0) {
-			selectedEffectIndex += lx.getEffects().size();
-		}
-		setSelectedEffect(selectedEffectIndex);
-	}
-	
-	/**
-	 * Sets the selected effect
-	 * 
-	 * @param index
-	 */
-	public void setSelectedEffect(int index) {
-		selectedEffectIndex = index % lx.getEffects().size();
-		LXEffect selectedEffect = getSelectedEffect();
-		for (EffectListener listener : this.effectListeners) {
-			listener.effectSelected(selectedEffect);
-		}
-	}
-	
-	public void setSelectedEffect(LXEffect effect) {
-		int i = 0;
-		for (LXEffect fx : lx.getEffects()) {
-			if (fx == effect) {
-				setSelectedEffect(i);
-			}
-			++i;
-		}
-	}
-
 	/**
 	 * Invoked when the sketch shuts down. Close any engine components
 	 * that should not keep running.
